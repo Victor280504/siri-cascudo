@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.title {
+  font-size: 64px;
+  font-weight: bold;
+}
+
+.subtitle {
+  font-size: 40px;
+  font-weight: 600;
+}
+
+.text {
+  font-size: 24px;
+  font-weight: medium;
+  font-weight: 500;
+}

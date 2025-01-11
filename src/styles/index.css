@@ -1,0 +1,50 @@
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px; /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
+
+.material-symbols-outlined.sm {
+  font-size: 20px;
+}
+.material-symbols-outlined.md {
+  font-size: 40px;
+}
+.material-symbols-outlined.lg {
+  font-size: 60px;
+}
+
+.material-symbols-outlined.primary {
+  color: #d6faff;
+}
+.material-symbols-outlined.primary.acent {
+  color: #d6faff;
+}
+.material-symbols-outlined.primary.light {
+  color: #fff;
+}
+.material-symbols-outlined.secondary {
+  color: #28356a;
+}
+.material-symbols-outlined.purple {
+  color: #8260d7;
+}
+.material-symbols-outlined.edit {
+  color: #93a9e7;
+}
+
+.material-symbols-outlined.fill {
+  font-variation-settings: "FILL" 1;
+}
+
+.material-symbols-outlined.stroke {
+  font-variation-settings: "FILL" 0;
+}

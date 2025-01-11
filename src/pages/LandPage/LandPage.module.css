@@ -1,0 +1,58 @@
+.background {
+  width: 100%;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+}
+
+.profile {
+  width: 207px;
+  height: 207px;
+}
+
+.section {
+  position: absolute;
+  top: 890px;
+  width: 100%;
+  z-index: -2;
+}
+
+.sectionDiv {
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 750px;
+  box-sizing: border-box;
+}
+
+.sectionOne {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  gap: 15px;
+}
+
+@media (min-width: 1500px) {
+  .sectionDiv {
+    margin-top: 10%;
+  }
+  .sectionOne {
+    margin-top: 6%;
+  }
+}
+
+.bigProfile {
+  width: 370px;
+  height: 370px;
+}
+
+.smallProfile {
+  width: 100px;
+  height: 100px;
+}

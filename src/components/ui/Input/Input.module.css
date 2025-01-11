@@ -1,0 +1,85 @@
+.input {
+  width: 340px;
+  height: 50px;
+  border-radius: 15px;
+  border: 2px solid #93a9e7;
+  padding-left: 10px;
+  margin-bottom: 5px;
+}
+
+.input.error {
+  border-color: #e35f5f;
+}
+.input::placeholder {
+  color: #a0a0a0;
+}
+.input:focus-visible {
+  outline-color: #32356e;
+}
+
+.input[type="submit"] {
+  margin-top: 30px;
+  padding: 0;
+  width: 175px;
+  color: #ffffff;
+  background-color: #32356e;
+}
+.input[type="submit"]:hover {
+  background-color: #54aed8;
+}
+.input[type="submit"]:disabled {
+  background-color: #a0a0a0;
+}
+
+.input[type="email"]:disabled {
+}
+.input[type="text"]:disabled {
+}
+.input[type="file"]:disabled {
+}
+.input[type="password"]:disabled {
+}
+
+.input[type="date"] {
+  width: 100%;
+  color: var(--color-secondary);
+  font-size: var(--p-size);
+  font-family: var(--font-family-base);
+  font-weight: bold;
+  border-radius: 10px;
+  margin-top: var(--spacing-5);
+  padding-right: var(--spacing-15);
+}
+
+.input[type="date"]:disabled {
+  border-color: var(--color-state);
+  background-color: var(--color-bg);
+  color: var(--color-placeholder);
+}
+
+.input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(50%);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+
+}
+
+.label {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.label.required::after {
+  content: " *";
+  color: #e35f5f;
+}
+
+.helper_text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #e35f5f;
+}

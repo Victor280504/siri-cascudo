@@ -1,0 +1,19 @@
+<svg width="63" height="63" viewBox="0 0 208 208" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M103.511 208C160.679 208 207.023 161.656 207.023 104.489C207.023 47.3209 160.679 0.977295 103.511 0.977295C46.3436 0.977295 0 47.3209 0 104.489C0 161.656 46.3436 208 103.511 208ZM102.218 174.359C140.091 174.359 170.794 143.656 170.794 105.783C170.794 67.9089 140.091 37.2063 102.218 37.2063C64.3439 37.2063 33.6412 67.9089 33.6412 105.783C33.6412 143.656 64.3439 174.359 102.218 174.359Z" fill="#AD7405"/>
+<circle cx="9.05724" cy="9.05724" r="9.05724" transform="matrix(-1 0 0 1 25.8779 94.1375)" fill="#D9A644"/>
+<circle cx="9.05724" cy="9.05724" r="9.05724" transform="matrix(-1 0 0 1 51.7556 37.2063)" fill="#D9A644"/>
+<circle cx="9.05724" cy="9.05724" r="9.05724" transform="matrix(-1 0 0 1 173.382 158.832)" fill="#D9A644"/>
+<circle cx="9.05724" cy="9.05724" r="9.05724" transform="matrix(-1 0 0 1 173.382 37.2063)" fill="#D9A644"/>
+<circle cx="9.05724" cy="9.05724" r="9.05724" transform="matrix(-1 0 0 1 51.7556 156.244)" fill="#D9A644"/>
+<circle cx="9.05724" cy="9.05724" r="9.05724" transform="matrix(-1 0 0 1 113.862 11.3284)" fill="#D9A644"/>
+<circle cx="9.05724" cy="9.05724" r="9.05724" transform="matrix(-1 0 0 1 113.862 182.122)" fill="#D9A644"/>
+<circle cx="9.05724" cy="9.05724" r="9.05724" transform="matrix(-1 0 0 1 199.26 94.1375)" fill="#D9A644"/>
+<mask id="mask0_140_1559" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="33" y="37" width="138" height="138">
+<circle cx="102.217" cy="105.783" r="68.5763" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_140_1559)">
+<circle cx="95.7482" cy="122.603" r="121.626" fill="#23C5DB"/>
+<circle cx="101.463" cy="186.42" r="59.1444" fill="#FAFEFF"/>
+<circle cx="100.219" cy="91.4304" r="25.3476" fill="#FAFEFF"/>
+</g>
+</svg>
