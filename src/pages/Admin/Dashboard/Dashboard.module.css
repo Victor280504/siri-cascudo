@@ -141,6 +141,11 @@
   z-index: 20;
 }
 
+.slice.right {
+  right: 50%;
+}
+
+
 .popover {
   width: 270px;
   height: 100%;

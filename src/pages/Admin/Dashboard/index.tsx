@@ -1,10 +1,9 @@
 import { PropsWithChildren, useState } from "react";
 import Item from "../../../components/ui/Item";
 import styles from "./Dashboard.module.css";
-import { PopoverSlice, ProfileWB, Settings } from "../../../assets";
 import { useAuth } from "../../../hooks/useAuth";
-import { Line } from "../../../assets";
-import { Popover } from "@radix-ui/themes";
+import { Line, ProfileWB } from "../../../assets";
+import UserPopover from "../../../components/navigation/Popover";
 
 const Dashboard = () => {
   const { currentUser } = useAuth();
@@ -60,7 +59,6 @@ const Dashboard = () => {
 };
 
 const MenuNavItem = ({
-  to,
   children,
   icon,
 }: PropsWithChildren & { to: string; icon: string }) => {
@@ -72,7 +70,7 @@ const MenuNavItem = ({
   );
 };
 
-const MenuNav = ({ name, link }: { name: string; link?: string }) => {
+const MenuNav = ({ name }: { name: string }) => {
   return (
     <Item.Row
       justifyContent="space-between"
@@ -84,82 +82,12 @@ const MenuNav = ({ name, link }: { name: string; link?: string }) => {
         {" "}
         Olá, {name}
       </Item.Subtitle>
-      <Popover.Root>
-        <Popover.Trigger>
-          <button className={styles.button} style={{ padding: "0" }}>
-            <ProfileWB />
-          </button>
-        </Popover.Trigger>
-        <Popover.Content className={styles.pop} size="4">
-          <PopoverSlice className={styles.slice} />
-          <PopoverContent wallet="100" />
-        </Popover.Content>
-      </Popover.Root>
+      <UserPopover>
+        <button className={styles.button} style={{ padding: "0" }}>
+          <ProfileWB />
+        </button>
+      </UserPopover>
     </Item.Row>
-  );
-};
-
-const PopoverContent = ({ wallet }: { wallet: string }) => {
-  const { logout } = useAuth();
-  return (
-    <div className={styles.popover}>
-      <Item.Row width={"100%"} alignItems="center" gap={"20px"}>
-        <button className={styles.button} style={{ padding: "0", gap: "20px" }}>
-          <ProfileWB width={'47px'}/>
-          <Item.Text
-            color="#32356E"
-            fontSize={"20px"}
-            fontWeight="500"
-            margin={0}
-          >
-            Perfil
-          </Item.Text>
-        </button>
-      </Item.Row>
-      <Item.Row width={"100%"} alignItems="center" gap={"20px"}>
-        <button className={styles.button} style={{ padding: "0", gap: "20px" }}>
-          <Settings />
-          <Item.Text
-            color="#32356E"
-            fontSize={"20px"}
-            fontWeight="500"
-            margin={0}
-          >
-            Configurações
-          </Item.Text>
-        </button>
-      </Item.Row>
-      <Item.Row
-        width={"100%"}
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Item.Text
-          color="#32356E"
-          fontSize={"20px"}
-          fontWeight="bold"
-          margin={0}
-        >
-          Carteira:
-        </Item.Text>
-        <p
-          style={{
-            margin: "0",
-            color: "#927CDE",
-            fontSize: "20px",
-            fontWeight: "bold",
-            fontFamily: "Roboto",
-          }}
-        >
-          R$ {wallet}
-        </p>
-      </Item.Row>
-      <Item.Row width={"100%"} justifyContent="center" alignItems="center">
-        <button className={styles.logout} onClick={logout}>
-          Sair
-        </button>
-      </Item.Row>
-    </div>
   );
 };
 

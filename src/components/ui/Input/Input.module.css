@@ -7,6 +7,13 @@
   margin-bottom: 5px;
 }
 
+.input.editInput {
+  font-weight: 500;
+}
+.input.editInput:focus-visible {
+  outline: none;
+}
+
 .input.error {
   border-color: #e35f5f;
 }
@@ -65,12 +72,16 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
-
+  position: relative;
 }
 
 .label {
   font-weight: 500;
   margin-bottom: 5px;
+}
+
+.label.editInput {
+  color: #d6faff;
 }
 
 .label.required::after {

@@ -11,10 +11,15 @@ import Item from "../../ui/Item";
 import styles from "./Navbar.module.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
+import UserPopover from "../Popover";
+import { useState } from "react";
+import Menu from "../Settings";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { auth, currentUser, logout } = useAuth();
+  const { auth, currentUser } = useAuth();
+  const [open, setOpen] = useState(false);
+
   return (
     <nav className={styles.navbar}>
       <Item.Row
@@ -67,14 +72,16 @@ const Navbar = () => {
         )}
         <Item.Container gap={"20px"}>
           {auth ? (
-            <Button
-              radius="full"
-              className={styles.button}
-              onClick={() => logout()}
+            <UserPopover
+              homeButton={true}
+              isOpen={open}
+              setModalOpen={() => setOpen(!open)}
             >
-              <ProfileWB className={styles.profile} />
-              Olá, {currentUser?.name}
-            </Button>
+              <Button radius="full" className={styles.button}>
+                <ProfileWB className={styles.profile} />
+                Olá, {currentUser?.name}
+              </Button>
+            </UserPopover>
           ) : (
             <Button
               radius="full"
@@ -85,6 +92,7 @@ const Navbar = () => {
               Login
             </Button>
           )}
+          <Menu isOpen={open} setModalOpen={() => setOpen(!open)} />
           <div className={styles.store}>
             <Store className={styles.profile} />
             <div className={styles.storeText}>1</div>
