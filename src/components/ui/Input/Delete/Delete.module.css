@@ -1,0 +1,98 @@
+.delete_icon {
+  fill: var(--color-error);
+}
+
+.delete_icon.hover {
+  fill: var(--color-bg);
+}
+
+.delete {
+  width: 220px;
+  align-self: center;
+  background-color: #e35f5f;
+  color: #fff;
+  border: none;
+  border-radius: 32px;
+  padding: 5px 30px;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.delete:hover {
+  background-color: #8260d7;
+}
+
+.delete:disabled {
+  background-color: #c4c4c4;
+}
+
+.confirmationOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.confirmationBox {
+  background-color: #fff;
+  padding: 25px;
+  height: 25%;
+  width: 300px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}
+
+.p {
+  margin-bottom: var(--spacing-10);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size);
+  font-weight: bold;
+  color: var(--color-secondary);
+}
+
+.button {
+  margin: 0 2px;
+  width: 40%;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.confirmationBox button:first-of-type {
+  background-color: #fff;
+  border: 2px solid #e35f5f;
+  color: #e35f5f;
+}
+
+.confirmationBox button:first-of-type:hover {
+  background-color: #e35f5f;
+  color: #fff;
+}
+
+.confirmationBox button:last-of-type {
+  background-color: #fff;
+  border: 2px solid #74cf88;
+  color: #74cf88;
+}
+.confirmationBox button:last-of-type:hover {
+  background-color: #74cf88;
+  color: #fff;
+}
+
+.confirmationBox button:hover {
+  opacity: 0.8;
+}

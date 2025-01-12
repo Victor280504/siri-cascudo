@@ -3,6 +3,7 @@ import { User } from "../types/User";
 import { api } from "../services";
 // import { requestConfig } from "../services/config";
 import { Login } from "../types/User";
+import { requestConfig } from "../services/config";
 
 type requestError = {
   response: any;
@@ -57,23 +58,24 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [token]);
 
-  const response = {
-    data: {
-      data: {
-        name: "Teste",
-        email: "teste@example.com",
-        password: "password123",
-        address: "123 Test St",
-        login: "testlogin",
-        roles: ["user", "admin"],
-      },
-      token: "123456",
-    },
-  };
+  // const response = {
+  //   data: {
+  //     data: {
+  //       id: "123",
+  //       name: "Teste",
+  //       email: "teste@example.com",
+  //       password: "password123",
+  //       address: "123 Test St",
+  //       login: "testlogin",
+  //       roles: ["user", "admin"],
+  //     },
+  //     token: "123456",
+  //   },
+  // };
   const fetchCurrentUser = async () => {
     try {
       setLoading(true);
-      //   const response = await api.get("/user/profile", requestConfig());
+      const response = await api.get("/user/profile", requestConfig());
       setAuth(true);
       setCurrentUser(response.data.data);
     } catch (error) {
@@ -88,9 +90,9 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     console.log(data);
     try {
       setLoading(true);
-      //   const response = await api.post("/user/login", data, {
-      //     withCredentials: true,
-      //   });
+      const response = await api.post("/user/login", data, {
+        withCredentials: true,
+      });
       localStorage.setItem("token", response.data.token);
       setToken(response.data.token);
       setAuth(true);
@@ -109,20 +111,20 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   async function logout() {
     try {
       setLoading(true);
-      // const response = await api.post("/user/logout");
-      // if (response.status === 204) {
-      //   localStorage.removeItem("token");
-      //   setToken(null);
-      //   setAuth(false);
-      //   setCurrentUser(null);
-      // }
-      const response = { status: 204 };
+      const response = await api.post("/user/logout");
       if (response.status === 204) {
         localStorage.removeItem("token");
         setToken(null);
         setAuth(false);
         setCurrentUser(null);
       }
+      // const response = { status: 204 };
+      // if (response.status === 204) {
+      //   localStorage.removeItem("token");
+      //   setToken(null);
+      //   setAuth(false);
+      //   setCurrentUser(null);
+      // }
     } catch (error) {
       console.log(error);
       setToken(null);

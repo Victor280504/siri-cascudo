@@ -1,17 +1,81 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { FooterWave, Logo, RegisterImage, SiriCascudo } from "../../assets";
 import { Input } from "../../components/ui/Input";
 import Item from "../../components/ui/Item";
 import { useAuth } from "../../hooks/useAuth";
 import styles from "./Register.module.css";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import apiService, {
+  ServerCreateResponse,
+  ServerError,
+  ValidationError,
+} from "../../services/api";
+import { api } from "../../services";
+import { User } from "../../types/User";
+
+const schema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  address: z.string(),
+  login: z.string(),
+  password: z
+    .string()
+    .min(8, "A senha deve ter no mínimo 8 caracteres")
+    .regex(/[a-z]/, "A senha deve conter pelo menos uma letra minúscula")
+    .regex(/[A-Z]/, "A senha deve conter pelo menos uma letra maiúscula")
+    .regex(/[0-9]/, "A senha deve conter pelo menos um número")
+    .regex(
+      /[^a-zA-Z0-9]/,
+      "A senha deve conter pelo menos um caractere especial"
+    ),
+});
 
 const Register = () => {
   const { error } = useAuth();
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm();
+    formState: { errors, isSubmitting, isDirty },
+    setError,
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
+
+  const [message, setMessage] = useState<
+    ServerError | ServerCreateResponse | null
+  >(null);
+  const navigate = useNavigate();
+
+  const onSubmit = async (data: any) => {
+    console.log(data);
+    const sendData = {
+      ...data,
+    };
+    const service = new apiService(api, "/user/register");
+    const res = await service.create<User>(sendData);
+
+    if ((res as ServerError).errors) {
+      (res as ServerError).errors.forEach((error: ValidationError) => {
+        setError(error.field, {
+          message: error.message,
+        });
+      });
+    } else {
+      if (res as ServerCreateResponse) {
+        setMessage(res as ServerCreateResponse);
+        setTimeout(() => {
+          navigate(`/home`);
+        }, 2000);
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div
@@ -42,7 +106,7 @@ const Register = () => {
         <Item.Link to="/" position="absolute" top={-30}>
           <img src={Logo} alt="Logo" width={90} />
         </Item.Link>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <Item.Subtitle
             color="#32356E"
             marginBottom={"40px"}
@@ -61,7 +125,7 @@ const Register = () => {
                 type="text"
                 label="Nome"
                 placeholder="Insira o seu nome"
-                // helperText={errors.email?.message}
+                helperText={errors.name?.message?.toString()}
                 required
                 {...register("name")}
               />
@@ -70,7 +134,7 @@ const Register = () => {
                 type="text"
                 label="Endereço"
                 placeholder="Rua Nº Bairro Cidade - Estado"
-                // helperText={errors.email?.message}
+                helperText={errors.address?.message?.toString()}
                 {...register("address")}
               />
               <Input
@@ -78,42 +142,62 @@ const Register = () => {
                 type="email"
                 label="Email"
                 placeholder="Insira o seu Email"
-                // helperText={errors.email?.message}
-                // {...register("email")}
+                helperText={errors.email?.message?.toString()}
+                {...register("email")}
               />
               <Input
                 required
                 type="password"
                 label="Senha"
                 placeholder="Insira a sua senha"
-                // helperText={errors.password?.message}
-                // {...register("password")}
+                helperText={errors.password?.message?.toString()}
+                {...register("password")}
               />
               <Input
                 required
                 label="Username"
                 placeholder="Insira o seu username"
-                // helperText={errors.password?.message}
-                // {...register("password")}
+                helperText={errors.login?.message?.toString()}
+                {...register("login")}
               />
             </Item.Col>
             <Item.Col justifyContent="start" height={"100%"} marginTop={"55px"}>
               <img src={RegisterImage} alt="Register" width={400} />
-              {!isSubmitting && <Input type="submit" value="Cadastrar" />}
-              {isSubmitting && (
-                <Input type="submit" value="Cadastrando..." disabled />
+              {isDirty ? (
+                <Input
+                  type="submit"
+                  value={isSubmitting ? "Criando..." : "Criar"}
+                  disabled={isSubmitting}
+                />
+              ) : (
+                <Input type="submit" value="Criar" disabled />
               )}
-              {error && (
-                <Item.Text color="#000000">
-                  {error?.response?.data?.message}
-                </Item.Text>
-              )}{" "}
               <span style={{ fontWeight: "400", color: "#32356E" }}>
                 Já é cliente? Faça{" "}
                 <Item.Link to="/login">
                   <strong style={{ textDecoration: "underline" }}>Login</strong>
                 </Item.Link>
               </span>
+              {message && (
+                <Item.Text
+                  color="#e35f5f"
+                  margin={0}
+                  marginTop={"10px"}
+                  fontSize={"16px"}
+                >
+                  {message.message}
+                </Item.Text>
+              )}
+              {error && (
+                <Item.Text
+                  color="#e35f5f"
+                  margin={0}
+                  marginTop={"10px"}
+                  fontSize={"16px"}
+                >
+                  {error?.response?.data?.message}
+                </Item.Text>
+              )}{" "}
             </Item.Col>
           </Item.Row>
         </form>

@@ -86,13 +86,15 @@ class apiService {
   }
 
   public async create<T>(
-    data: T
+    data: T,
+    headers: object = { "Content-Type": "application/json" }
   ): Promise<AxiosError | ServerError | ServerCreateResponse> {
     try {
       const response = await this.api.post(this.path, data, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          ...headers,
         },
+        timeout: 5000,
       });
       return response.data as ServerCreateResponse;
     } catch (error) {
@@ -105,12 +107,13 @@ class apiService {
 
   public async update<T>(
     id: string,
-    data: T
+    data: T,
+    headers: object = { "Content-Type": "application/json" }
   ): Promise<AxiosError | ServerError | ServerUpdateResponse> {
     try {
       const response = await this.api.put(`${this.path}/${id}`, data, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          ...headers,
         },
         timeout: 5000,
       });
