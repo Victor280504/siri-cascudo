@@ -9,19 +9,23 @@ import { useNavigate } from "react-router-dom";
 const UserPopover = ({
   children,
   homeButton = false,
-  // setModalOpen,
-}: PropsWithChildren & {
+  slice = true,
+}: // setModalOpen,
+PropsWithChildren & {
   homeButton?: boolean;
   isOpen?: boolean;
+  slice?: boolean;
   setModalOpen?: () => void;
 }) => {
   return (
     <Popover.Root>
       <Popover.Trigger>{children}</Popover.Trigger>
       <Popover.Content className={styles.pop} size="4">
-        <PopoverSlice
-          className={`${styles.slice} ${homeButton && styles.right}`}
-        />
+        {slice && (
+          <PopoverSlice
+            className={`${styles.slice} ${homeButton && styles.right}`}
+          />
+        )}
         <PopoverContent wallet="100">
           {/* <button
             className={styles.button}

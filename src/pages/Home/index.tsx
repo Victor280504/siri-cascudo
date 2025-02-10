@@ -1,36 +1,37 @@
 import { PropsWithChildren } from "react";
 import Item from "../../components/ui/Item";
 import styles from "./Home.module.css";
-import { HamburguerImg } from "../../assets";
-
-const menuItems = [
-  {
-    id: "1",
-    link: "/sanduiche1",
-    title: "Sanduíche de Frango",
-    description: "Delicioso sanduíche de frango com alface e tomate.",
-    price: 12.99,
-    img: HamburguerImg,
-  },
-  {
-    id: "2",
-    link: "/sanduiche2",
-    title: "Sanduíche de Carne",
-    description: "Sanduíche de carne com queijo e cebola caramelizada.",
-    price: 15.99,
-    img: HamburguerImg,
-  },
-  {
-    id: "3",
-    link: "/sanduiche3",
-    title: "Sanduíche Vegano",
-    description: "Sanduíche vegano com grão-de-bico e abacate.",
-    price: 13.99,
-    img: HamburguerImg,
-  },
-];
+import productService from "../../services/productService";
+import categoryService from "../../services/categoryService";
+import { useQuery } from "@tanstack/react-query";
+import { Category, Product } from "../../types/Products";
 
 const Home = () => {
+  const {
+    data: products,
+    isLoading: productsLoading,
+    isError: productsError,
+  } = useQuery({
+    queryKey: ["products/all"],
+    queryFn: async () => await productService.getAll(),
+  });
+
+  const {
+    data: category,
+    isLoading: categoryLoading,
+    isError: categoryError,
+  } = useQuery({
+    queryKey: ["category/all"],
+    queryFn: async () => await categoryService.getAll(),
+  });
+
+  if (productsLoading || categoryLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (productsError || categoryError) {
+    return <div>Error...</div>;
+  }
   return (
     <Item.Container flexDirection="column">
       <Item.Col
@@ -112,7 +113,7 @@ const Home = () => {
       </Item.Col>
       <Item.Container
         width={"100%"}
-        flexDirection='column'
+        flexDirection="column"
         justifyContent="flex-start"
         padding={"3% 7%"}
         paddingTop={"5%"}
@@ -121,21 +122,17 @@ const Home = () => {
         backgroundColor="#CAF9FF"
         gap={"15px"}
       >
-        <Section title="Sanduíches" id="sanduiche">
-          <SectionList menuItems={menuItems} color="#CDD5F6" />
-        </Section>
-        <Section title="Combos" id="combos">
-          <SectionList menuItems={menuItems} color="#F7DBA5" />
-        </Section>
-        <Section title="Acompanhamentos" id="acompanhamento">
-          <SectionList menuItems={menuItems.slice(0, 1)} color="#F8F5B8" />
-        </Section>
-        <Section title="Bebidas" id="bebidas">
-          <SectionList menuItems={menuItems.slice(0, 1)} color="#FFD9E4" />
-        </Section>
-        <Section title="Sobremesas" id="sobremesas">
-          <SectionList menuItems={menuItems.slice(0, 1)} color="#CCECCA" />
-        </Section>
+        {category &&
+          category.map((cat: Category) => {
+            const menuItems = products.filter(
+              (item: Product) => item.idCategory === cat.id
+            );
+            return (
+              <Section title={cat.name} key={cat.id} id={cat.name}>
+                <SectionList menuItems={menuItems} color="#CDD5F6" />
+              </Section>
+            );
+          })}
       </Item.Container>
     </Item.Container>
   );
@@ -149,7 +146,7 @@ const Section = ({
   return (
     <Item.Col alignItems="start" width={"100%"}>
       <div id={id}>
-        <Item.Subtitle marginBottom={'20px'}>{title}</Item.Subtitle>
+        <Item.Subtitle marginBottom={"20px"}>{title}</Item.Subtitle>
       </div>
       {children}
     </Item.Col>

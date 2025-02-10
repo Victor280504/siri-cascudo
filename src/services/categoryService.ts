@@ -1,91 +1,24 @@
-import { requestConfig } from "./config";
 import { AxiosError, AxiosInstance } from "axios";
+import apiService, {
+  ApiError,
+  ServerCreateResponse,
+  ServerError,
+  ServerUpdateResponse,
+} from "./api";
+import { requestConfig } from "./config";
 import { api } from ".";
 
-export interface ServerError {
-  statusCode: number;
-  message: string;
-  errors: ValidationError[];
-}
-
-export interface ValidationError {
-  field: string;
-  message: string;
-}
-
-export interface ApiError {
-  timestamp: Date;
-  status: number;
-  error: string;
-  message: string;
-  details: string;
-  path: string;
-}
-
-export interface ServerCreateResponse {
-  id: string;
-  message: string;
-}
-
-export interface ServerUpdateResponse {
-  id: string;
-  message: string;
-  data: object;
-}
-
-export interface PaginatedData<Data> {
-  first: number;
-  prev: any;
-  next: any;
-  last: number;
-  pages: number;
-  items: number;
-  data: Data[];
-}
-
-class apiService {
-  protected api: AxiosInstance;
-  protected path: string;
-
+class categoryService extends apiService {
   constructor(api: AxiosInstance, path: string) {
-    this.api = api;
-    this.path = path;
+    super(api, path);
   }
 
-  public async getAll<T>(): Promise<PaginatedData<T>> {
+  public async getAll() {
     try {
       const response = await this.api.get(this.path, requestConfig(false));
-      return response.data as PaginatedData<T>;
+      return response.data;
     } catch (error) {
       throw new Error(`Error fetching data: ${error}`);
-    }
-  }
-
-  public async getById<T>(id: string): Promise<T> {
-    try {
-      const response = await this.api.get(
-        `${this.path}/${id}`,
-        requestConfig(false)
-      );
-
-      return response.data as T;
-    } catch (error) {
-      throw new Error(`Error fetching data: ${error}`);
-    }
-  }
-
-  public static async search<T>(
-    path: string,
-    query: string
-  ): Promise<PaginatedData<T>> {
-    try {
-      const response = await api.get(
-        `${path}search?q=${query}`,
-        requestConfig(false)
-      );
-      return response.data as PaginatedData<T>;
-    } catch (error) {
-      throw new Error(`Error searching data: ${error}`);
     }
   }
 
@@ -94,7 +27,7 @@ class apiService {
   ): Promise<AxiosError | ServerError | ServerCreateResponse> {
     try {
       const response = await this.api.post(
-        this.path,
+        `${this.path}`,
         data,
         requestConfig(false)
       );
@@ -125,7 +58,6 @@ class apiService {
       throw error;
     }
   }
-
   public async delete(
     id: string
   ): Promise<AxiosError | ApiError | ServerCreateResponse> {
@@ -144,4 +76,4 @@ class apiService {
   }
 }
 
-export default apiService;
+export default new categoryService(api, "/categories");

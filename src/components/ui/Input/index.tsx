@@ -10,13 +10,16 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { type = "", name = "", label = "", helperText = "", editInput, ...props },
+    { type = "", name = "", label = "", helperText = "", editInput, width, ...props },
     ref
   ) => {
     const inputId = useId();
     const hasError = helperText.length > 0;
     return (
-      <div className={styles.container}>
+      <div
+        className={`${styles.container} ${editInput ? styles.editInput : ""}`}
+        style={{ width: width }}
+      >
         <label
           className={`${styles.label} ${props.required && styles.required} ${
             editInput ? styles.editInput : ""

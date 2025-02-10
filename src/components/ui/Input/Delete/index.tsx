@@ -127,9 +127,11 @@ const DeleteWithConfirmation = ({
         <DeleteConfirmation onConfirm={handleConfirm} onCancel={handleCancel} />
       )}
       {message && <span className={styles.feedback}>{message.message}</span>}
-      <Item.Row justifyContent="center" width="100%">
-        {feedback && <span className={styles.feedback}>{feedback}</span>}
-      </Item.Row>
+      {feedback && (
+        <Item.Row justifyContent="center" width="100%">
+          <span className={styles.feedback}>{feedback}</span>
+        </Item.Row>
+      )}
     </>
   );
 };
