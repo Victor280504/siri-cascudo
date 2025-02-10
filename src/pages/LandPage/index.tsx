@@ -1,10 +1,19 @@
 import styles from "./LandPage.module.css";
 import Item from "../../components/ui/Item";
 import {
+  AcompImg,
   BackgroundLandpage,
+  BebImg,
+  BrunoImg,
+  CombImg,
+  EdmaraImg,
+  HambImg,
   HamburguerLandpage,
   LandpageSection,
+  MClaraImg,
   ProfileWB,
+  SobrImg,
+  VictorImg,
 } from "../../assets";
 import { PropsWithChildren } from "react";
 
@@ -38,17 +47,17 @@ const LandPage = () => {
         <Item.Img src={HamburguerLandpage} alt="" />
       </div>
       <div className={styles.sectionDiv}>
-        <Item.Row
+      <Item.Row
           width={"100%"}
           justifyContent="space-between"
           marginLeft={"3%"}
           marginRight={"3%"}
         >
-          <Actions link="/home#sanduiches">Sanduíches</Actions>
-          <Actions link="/home#combos">Combos</Actions>
-          <Actions link="/home#acompanhamentos">Guarnições</Actions>
-          <Actions link="/home#bebidas">Bebidas</Actions>
-          <Actions link="/home#sobremesas">sobremesas</Actions>
+          <Actions link="/home#sanduiches" img={HambImg}>Sanduíches</Actions>
+          <Actions link="/home#combos" img={CombImg}>Combos</Actions>
+          <Actions link="/home#acompanhamentos" img={AcompImg}>Guarnições</Actions>
+          <Actions link="/home#bebidas" img={BebImg}>Bebidas</Actions>
+          <Actions link="/home#sobremesas" img={SobrImg}>sobremesas</Actions>
         </Item.Row>
         <Item.Row
           width={"100%"}
@@ -104,61 +113,78 @@ const LandPage = () => {
         >
           <ProfileWB className={styles.bigProfile} />
           <Item.Col alignItems="flex-start" gap={"5px"} width={"65%"}>
-            <Item.Row gap={"25px"}>
-              <Actions
-                isLink={false}
-                tam="smallProfile"
-                fontSize="24px"
-                color="#AD7405"
-                fontWeight="400"
-              >
-                M.Clara
-              </Actions>
-              <Actions
-                isLink={false}
-                tam="smallProfile"
-                fontSize="24px"
-                color="#AD7405"
-                fontWeight="400"
-              >
-                Victor
-              </Actions>
-              <Actions
-                isLink={false}
-                tam="smallProfile"
-                fontSize="24px"
-                color="#AD7405"
-                fontWeight="400"
-              >
-                Edmara
-              </Actions>
-              <Actions
-                isLink={false}
-                link="/home"
-                tam="smallProfile"
-                fontSize="24px"
-                color="#AD7405"
-                fontWeight="400"
-              >
-                Bruno A.
-              </Actions>
-            </Item.Row>
-            <Item.Text
+          <Item.Text
               color="#23C5DB"
+              fontWeight={"bold"}
+              marginBottom={"0"}
+              marginTop={"0px"}
+              fontSize={"60px"}
+            >
+              Sobre Nós
+            </Item.Text>
+
+            <Item.Text
+              color="#252525"
               fontWeight={"bold"}
               marginBottom={"0"}
               marginTop={"10px"}
             >
               Projeto
             </Item.Text>
-            <Item.Text color="#23C5DB" fontSize={"24px"}>
-              O ’Maré Burger’ possui uma combinação irresistível de filé de
-              peixe selecionado, tempero especial e ingredientes frescos. Feito
-              para quem busca sabor e qualidade em cada mordida.
+            <Item.Text color="#252525" fontSize={"24px"} fontWeight={400}>
+            Desenvolvido na disciplina de Programação para Web,
+            o E-commerce Siri Cascudo é uma página web destinada a
+            facilitar e administrar as vendas de uma hamburgueria.
             </Item.Text>
-            <Item.Text color="#23C5DB">
-              Peça agora e experimente o sabor único do fundo do mar!
+            <Item.Text color="#252525">
+              Clique abaixo e saiba mais sobre os desenvolvedores do projeto
             </Item.Text>
+            <Item.Row gap={"25px"}>
+              <Actions
+                isLink={true}
+                link="https://www.linkedin.com/in/maria-clara-de-oliveira-alexandre-173ba8245/"
+                tam="smallProfile"
+                fontSize="24px"
+                color="#8260D7"
+                fontWeight="500"
+                img= {MClaraImg}
+              >
+                M.Clara
+              </Actions>
+              <Actions
+                isLink={true}
+                link="https://www.linkedin.com/in/victor-emanuel-tomaz-das-neves-226268292/"
+                tam="smallProfile"
+                fontSize="24px"
+                color="#3D94E4"
+                fontWeight="500"
+                img={VictorImg}
+              >
+                Victor
+              </Actions>
+              <Actions
+                isLink={true}
+                link="https://www.linkedin.com/in/edmarar/"
+                tam="smallProfile"
+                fontSize="24px"
+                color="#E35F5F"
+                fontWeight="500"
+                img={EdmaraImg}
+              >
+                Edmara
+              </Actions>
+              <Actions
+                isLink={true}
+                link="https://www.linkedin.com/in/brunoalejandrodev/"
+                tam="smallProfile"
+                fontSize="24px"
+                color="#65BE4F"
+                fontWeight="500"
+                img={BrunoImg}
+              >
+                Bruno A.
+              </Actions>
+            </Item.Row>
           </Item.Col>
         </Item.Row>
       </Item.Container>
@@ -174,8 +200,10 @@ const Actions = ({
   color = "#FFFFFF",
   fontWeight = "bold",
   isLink = true,
+  img,
 }: PropsWithChildren & {
   isLink?: boolean;
+  img?: string;
   link?: string;
   tam?: string;
   fontSize?: string;
@@ -191,7 +219,7 @@ const Actions = ({
     >
       {isLink ? (
         <Item.Link to={link}>
-          <ProfileWB className={styles[tam]} />
+          <img src={img} className={styles[tam]} />
           <Item.Subtitle
             color={color}
             textAlign="center"
