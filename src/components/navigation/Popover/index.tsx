@@ -1,14 +1,15 @@
 import { Popover } from "@radix-ui/themes";
-import { PopoverSlice, ProfileWB, Settings } from "../../../assets";
+import { PopoverSlice, ProfileWB } from "../../../assets";
 import styles from "../../../pages/Admin/Dashboard/Dashboard.module.css";
 import Item from "../../ui/Item";
 import { useAuth } from "../../../hooks/useAuth";
 import { PropsWithChildren } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserPopover = ({
   children,
   homeButton = false,
-  setModalOpen,
+  // setModalOpen,
 }: PropsWithChildren & {
   homeButton?: boolean;
   isOpen?: boolean;
@@ -22,10 +23,10 @@ const UserPopover = ({
           className={`${styles.slice} ${homeButton && styles.right}`}
         />
         <PopoverContent wallet="100">
-          <button
+          {/* <button
             className={styles.button}
             style={{ padding: "0", gap: "20px" }}
-            onClick={setModalOpen}
+            onClick={() => navigate("/user/profile")}
           >
             <Settings />
             <Item.Text
@@ -36,7 +37,7 @@ const UserPopover = ({
             >
               Configurações
             </Item.Text>
-          </button>
+          </button> */}
         </PopoverContent>
       </Popover.Content>
     </Popover.Root>
@@ -48,10 +49,16 @@ const PopoverContent = ({
   children,
 }: PropsWithChildren & { wallet: string }) => {
   const { logout } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <div className={styles.popover}>
       <Item.Row width={"100%"} alignItems="center" gap={"20px"}>
-        <button className={styles.button} style={{ padding: "0", gap: "20px" }}>
+        <button
+          className={styles.button}
+          style={{ padding: "0", gap: "20px" }}
+          onClick={() => navigate("/user/profile")}
+        >
           <ProfileWB width={"47px"} />
           <Item.Text
             color="#32356E"

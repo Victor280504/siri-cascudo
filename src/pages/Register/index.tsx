@@ -20,7 +20,6 @@ const schema = z.object({
   name: z.string(),
   email: z.string().email(),
   address: z.string(),
-  login: z.string(),
   password: z
     .string()
     .min(8, "A senha deve ter no mínimo 8 caracteres")
@@ -54,7 +53,7 @@ const Register = () => {
     const sendData = {
       ...data,
     };
-    const service = new apiService(api, "/user/register");
+    const service = new apiService(api, "/auth/register");
     const res = await service.create<User>(sendData);
 
     if ((res as ServerError).errors) {
@@ -152,13 +151,6 @@ const Register = () => {
                 placeholder="Insira a sua senha"
                 helperText={errors.password?.message?.toString()}
                 {...register("password")}
-              />
-              <Input
-                required
-                label="Username"
-                placeholder="Insira o seu username"
-                helperText={errors.login?.message?.toString()}
-                {...register("login")}
               />
             </Item.Col>
             <Item.Col justifyContent="start" height={"100%"} marginTop={"55px"}>

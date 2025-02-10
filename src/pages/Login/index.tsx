@@ -87,6 +87,7 @@ const Login = () => {
             {...register("email")}
           />
           <Input
+            type="password"
             label="Senha"
             placeholder="Insira o sua senha"
             helperText={errors.password?.message}

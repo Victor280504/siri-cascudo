@@ -7,15 +7,28 @@
 }
 
 .delete {
-  width: 220px;
-  align-self: center;
-  background-color: #e35f5f;
-  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 100px;
+  height: 40px;
   border: none;
-  border-radius: 32px;
-  padding: 5px 30px;
-  font-weight: bold;
-  font-size: 24px;
+  background-color: #e35f5f;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.delete:hover {
+  background-color: #a17b18;
+  color: #ffffff;
+}
+
+.delete:disabled {
+  background-color: #a0a0a0;
+  color: #ffffff;
+  border-color: #a0a0a0;
 }
 
 .delete:hover {

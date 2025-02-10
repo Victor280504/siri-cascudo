@@ -40,6 +40,12 @@
 .material-symbols-outlined.edit {
   color: #93a9e7;
 }
+.material-symbols-outlined.editnew {
+  color: #a17b18;
+}
+.material-symbols-outlined.light {
+  color: #ffffff;
+}
 
 .material-symbols-outlined.fill {
   font-variation-settings: "FILL" 1;

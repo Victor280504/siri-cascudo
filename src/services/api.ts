@@ -14,17 +14,21 @@ export interface ValidationError {
 }
 
 export interface ApiError {
-  statusCode: number;
+  timestamp: Date;
+  status: number;
+  error: string;
   message: string;
+  details: string;
+  path: string;
 }
 
 export interface ServerCreateResponse {
-  _id: string;
+  id: string;
   message: string;
 }
 
 export interface ServerUpdateResponse {
-  _id: string;
+  id: string;
   message: string;
   data: object;
 }
@@ -64,6 +68,7 @@ class apiService {
         requestConfig(false)
       );
 
+      console.log(response.data);
       return response.data as T;
     } catch (error) {
       throw new Error(`Error fetching data: ${error}`);
@@ -86,16 +91,14 @@ class apiService {
   }
 
   public async create<T>(
-    data: T,
-    headers: object = { "Content-Type": "application/json" }
+    data: T
   ): Promise<AxiosError | ServerError | ServerCreateResponse> {
     try {
-      const response = await this.api.post(this.path, data, {
-        headers: {
-          ...headers,
-        },
-        timeout: 5000,
-      });
+      const response = await this.api.post(
+        this.path,
+        data,
+        requestConfig(false)
+      );
       return response.data as ServerCreateResponse;
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
@@ -107,16 +110,14 @@ class apiService {
 
   public async update<T>(
     id: string,
-    data: T,
-    headers: object = { "Content-Type": "application/json" }
+    data: T
   ): Promise<AxiosError | ServerError | ServerUpdateResponse> {
     try {
-      const response = await this.api.put(`${this.path}/${id}`, data, {
-        headers: {
-          ...headers,
-        },
-        timeout: 5000,
-      });
+      const response = await this.api.put(
+        `${this.path}/${id}`,
+        data,
+        requestConfig(false)
+      );
       return response.data as ServerUpdateResponse;
     } catch (error) {
       if (error instanceof AxiosError && error.response) {

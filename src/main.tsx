@@ -12,7 +12,7 @@ import { Theme } from "@radix-ui/themes";
 import LandPage from "./pages/LandPage";
 import Login from "./pages/Login";
 import AuthProvider from "./contexts/AuthProvider";
-import { adminRoutes } from "./pages/Routes";
+import { adminRoutes, userRoutes } from "./pages/Routes";
 import Register from "./pages/Register";
 
 const queryClient = new QueryClient();
@@ -43,6 +43,7 @@ const router = createBrowserRouter(
       element: <Register />,
     },
     ...adminRoutes,
+    ...userRoutes,
   ],
   {
     future: {

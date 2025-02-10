@@ -4,9 +4,10 @@ import styles from "./Dashboard.module.css";
 import { useAuth } from "../../../hooks/useAuth";
 import { Line, ProfileWB } from "../../../assets";
 import UserPopover from "../../../components/navigation/Popover";
+import Menu from "../../../components/navigation/Settings";
 
 const Dashboard = () => {
-  const { currentUser } = useAuth();
+  const { auth, currentUser } = useAuth();
   return (
     <div className={styles.container}>
       <div className={styles.navMenu}>
@@ -71,6 +72,8 @@ const MenuNavItem = ({
 };
 
 const MenuNav = ({ name }: { name: string }) => {
+  const [open, setOpen] = useState(false);
+
   return (
     <Item.Row
       justifyContent="space-between"
@@ -87,6 +90,7 @@ const MenuNav = ({ name }: { name: string }) => {
           <ProfileWB />
         </button>
       </UserPopover>
+      <Menu isOpen={open} setModalOpen={() => setOpen(!open)} />
     </Item.Row>
   );
 };

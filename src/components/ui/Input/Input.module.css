@@ -8,7 +8,11 @@
 }
 
 .input.editInput {
+  height: 50px;
+  width: 100%;
   font-weight: 500;
+  border: none;
+  background-color: #E9E9E9;
 }
 .input.editInput:focus-visible {
   outline: none;
@@ -81,7 +85,7 @@
 }
 
 .label.editInput {
-  color: #d6faff;
+  font-weight: bold;
 }
 
 .label.required::after {

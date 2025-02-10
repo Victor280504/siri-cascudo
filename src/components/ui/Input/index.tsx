@@ -35,11 +35,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...props}
         />
-        {editInput && (
+        {/* {editInput && (
           <span className="material-symbols-outlined edit sm" style={{ cursor: "pointer", position: "absolute", left: "90%", top: "50%" }}>
             edit
           </span>
-        )}
+        )} */}
         {hasError && <span className={styles.helper_text}>{helperText}</span>}
       </div>
     );
