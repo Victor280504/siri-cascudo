@@ -156,10 +156,10 @@ const Section = ({
 interface SectionItemProps {
   id: string;
   link: string;
-  title: string;
+  name: string;
   description: string;
   price: number;
-  img: string;
+  image: string;
   color?: string;
 }
 
@@ -177,10 +177,10 @@ const SectionList = ({
         <SectionItem
           key={item.id}
           link={item.link}
-          title={item.title}
+          name={item.name}
           description={item.description}
           price={item.price}
-          img={item.img}
+          image={item.image}
           color={color}
           id={item.id}
         />
@@ -191,10 +191,10 @@ const SectionList = ({
 
 const SectionItem = ({
   link,
-  title,
+  name,
   description,
   price,
-  img,
+  image,
   color,
 }: SectionItemProps) => {
   return (
@@ -227,11 +227,11 @@ const SectionItem = ({
               height={"200px"}
               justifyContent="center"
             >
-              <Item.Img src={img} alt={title} width={"70%"} />
+              <Item.Img src={image} alt={name} width={"70%"} />
             </Item.Container>
             <Item.Col alignItems="start" paddingLeft={"20px"} width={"70%"}>
               <Item.Text fontWeight={"bold"} fontSize={"32px"}>
-                {title}
+                {name}
               </Item.Text>
               <p className={styles.itemDescription}>{description}</p>
             </Item.Col>
