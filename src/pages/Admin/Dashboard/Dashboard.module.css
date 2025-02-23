@@ -10,7 +10,6 @@
   box-sizing: border-box;
 }
 
-
 .button {
   background-color: none;
   background: none;
@@ -19,6 +18,17 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  opacity: 50%;
+}
+.button.link {
+  background: none;
+  border: none;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button.active {
+  opacity: 100%;
 }
 
 .button_text {
@@ -234,6 +244,7 @@
 .product {
   width: 15%;
   height: 150px;
+  padding: 20px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;

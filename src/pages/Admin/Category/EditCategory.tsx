@@ -4,7 +4,7 @@ import { z } from "zod";
 import Item from "../../../components/ui/Item/index.tsx";
 import { Input } from "../../../components/ui/Input/index.tsx";
 import { useAuth } from "../../../hooks/useAuth.ts";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   ApiError,
@@ -151,9 +151,29 @@ const EditCategory = () => {
         justifyContent="center"
         alignItems="start"
       >
-        <Item.Text fontSize={"50px"} fontWeight={"bold"} color="#28356A">
-          Categoria
-        </Item.Text>
+        <Item.Row alignItems="center" position="relative">
+          <Link
+            to="/admin/products"
+            style={{
+              textDecoration: "none",
+              marginTop: "5px",
+              position: "absolute",
+              left: "-60px",
+            }}
+          >
+            <span className="material-symbols-outlined secondary lg">
+              chevron_left
+            </span>
+          </Link>
+          <Item.Text
+            fontSize={"50px"}
+            fontWeight={"bold"}
+            color="#28356A"
+            margin={0}
+          >
+            Categoria
+          </Item.Text>
+        </Item.Row>
         <div style={{ display: "flex", justifyContent: "center", margin: "0" }}>
           {!dataIsLoading && (
             <p style={{ margin: "0", color: "#a17b18", fontWeight: "bold" }}>

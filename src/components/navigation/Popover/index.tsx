@@ -28,7 +28,7 @@ PropsWithChildren & {
         )}
         <PopoverContent wallet="100">
           {/* <button
-            className={styles.button}
+            className={`${styles.button} ${styles.active}`}`}
             style={{ padding: "0", gap: "20px" }}
             onClick={() => navigate("/user/profile")}
           >
@@ -59,7 +59,7 @@ const PopoverContent = ({
     <div className={styles.popover}>
       <Item.Row width={"100%"} alignItems="center" gap={"20px"}>
         <button
-          className={styles.button}
+          className={`${styles.button} ${styles.active}`}
           style={{ padding: "0", gap: "20px" }}
           onClick={() => navigate("/user/profile")}
         >

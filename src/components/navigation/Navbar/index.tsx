@@ -75,7 +75,7 @@ const Navbar = () => {
               isOpen={open}
               setModalOpen={() => setOpen(!open)}
             >
-              <Button radius="full" className={styles.button}>
+              <Button radius="full" className={`${styles.button} ${styles.active}`}>
                 <ProfileWB className={styles.profile} />
                 Olá, {currentUser?.name.split(" ")[0]}
               </Button>
@@ -83,7 +83,7 @@ const Navbar = () => {
           ) : (
             <Button
               radius="full"
-              className={styles.button}
+              className={`${styles.button} ${styles.active}`}
               onClick={() => navigate("/login")}
             >
               <ProfileWB className={styles.profile} />

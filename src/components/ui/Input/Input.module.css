@@ -7,12 +7,22 @@
   margin-bottom: 5px;
 }
 
+
 .input.editInput {
   height: 50px;
   width: 100%;
   font-weight: 500;
   border: none;
-  background-color: #E9E9E9;
+  background-color: #e9e9e9;
+}
+
+.input.select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: url('data:image/svg+xml;utf8,<svg fill="%2393a9e7" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+  background-color: #e9e9e9;
+  width: 100%;
 }
 
 .input.editInput:focus-visible {
@@ -68,7 +78,6 @@
   cursor: pointer;
 }
 
-
 /* .input[type="email"]:disabled {
 }
 .input[type="text"]:disabled {
@@ -105,7 +114,6 @@
   margin-bottom: 10px;
   position: relative;
 }
-
 
 .label {
   font-weight: 500;

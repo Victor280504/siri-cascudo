@@ -4,7 +4,7 @@ import { z } from "zod";
 import Item from "../../../components/ui/Item";
 import { Input } from "../../../components/ui/Input/index.tsx";
 import { useAuth } from "../../../hooks/useAuth.ts";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   ApiError,
@@ -13,14 +13,17 @@ import {
   ServerUpdateResponse,
   ValidationError,
 } from "../../../services/api";
-import { FieldValue, useForm } from "react-hook-form";
+import { Controller, FieldValue, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import DeleteWithConfirmation from "../../../components/ui/Input/Delete";
 import { AxiosError } from "axios";
 import { TextArea } from "../../../components/ui/Input/TextArea/index.tsx";
 import productService from "../../../services/productService.ts";
 import { useParams } from "react-router-dom";
-import { Product } from "../../../types/Products.ts";
+import { Category, Product } from "../../../types/Products.ts";
+import { Select } from "../../../components/ui/Input/Select/index.tsx";
+import { useQuery } from "@tanstack/react-query";
+import categoryService from "../../../services/categoryService.ts";
 
 const schema = z.object({
   name: z.string().optional(),
@@ -38,7 +41,13 @@ const schema = z.object({
     .transform((val) => parseInt(val, 10))
     .optional(),
   image: z
-    .union([z.string(), z.instanceof(FileList).transform((list) => list[0])])
+    .union([
+      z.string(),
+      z.instanceof(FileList).transform((list) => {
+        const file = list[0];
+        return file;
+      }),
+    ])
     .optional(),
 });
 
@@ -58,6 +67,7 @@ const EditProduct = () => {
     handleSubmit,
     formState: { errors, dirtyFields, isDirty, isSubmitting },
     setError,
+    control,
   } = useForm({
     defaultValues: async () => {
       try {
@@ -81,6 +91,14 @@ const EditProduct = () => {
     resolver: zodResolver(schema),
   });
 
+  const {
+    data: category,
+    isLoading: categoryLoading,
+    isError: categoryError,
+  } = useQuery({
+    queryKey: ["category/all"],
+    queryFn: async () => await categoryService.getAll(),
+  });
   const onSubmit = async (
     data: FieldValue<typeof schema> & Record<string, any>
   ) => {
@@ -99,6 +117,20 @@ const EditProduct = () => {
 
     console.log(newData);
 
+    if (newData.image == undefined) {
+      delete newData.image;
+    }
+
+    if (newData.image instanceof File) {
+      if (newData.image.size >= 5 * 1024 * 1024) {
+        setError("image", {
+          type: "manual",
+          message: "A imagem deve ser menor que 5MB",
+        });
+        return;
+      }
+    }
+
     const formData = new FormData();
     Object.keys(newData).forEach((key) => {
       formData.append(key, newData[key]);
@@ -110,17 +142,28 @@ const EditProduct = () => {
     }
     const res = await productService.update(id, formData);
 
-    if ((res as ServerError).errors) {
-      (res as ServerError).errors.forEach((error: ValidationError) => {
-        setError(error.field as keyof typeof schema.shape, {
-          message: error.message,
+    if ((res as ServerError).errors || (res as ServerError).error) {
+      if ((res as ServerError).errors) {
+        (res as ServerError).errors.forEach((error: ValidationError) => {
+          setError(error.field as keyof typeof schema.shape, {
+            message: error.message,
+          });
         });
-      });
+      }
+      if (
+        ((res as ServerError).error &&
+          (res as ServerError).message != "Validation failed") ||
+        (res as ApiError).message == "Network Error"
+      ) {
+        setServerError(true);
+        setMessage(res as ServerUpdateResponse);
+      }
     } else {
       if (res as ServerUpdateResponse) {
         setMessage(res as ServerUpdateResponse);
         setTimeout(() => {
           setMessage(null);
+          navigate("/admin/products");
         }, 3000);
       }
     }
@@ -158,8 +201,26 @@ const EditProduct = () => {
   };
 
   useEffect(() => {
+    setTimeout(() => {
+      setServerError(false);
+    }, 3000);
+  }, [serverError]);
+  useEffect(() => {
+    setTimeout(() => {
+      setMessage(null);
+    }, 3000);
+  }, [message]);
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  if (categoryLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (categoryError) {
+    return <div>Error</div>;
+  }
 
   return (
     <div
@@ -178,26 +239,24 @@ const EditProduct = () => {
         justifyContent="center"
         alignItems="start"
       >
-        <Item.Text fontSize={"50px"} fontWeight={"bold"} color="#28356A">
-          Produto
-        </Item.Text>
-        <div style={{ display: "flex", justifyContent: "center", margin: "0" }}>
-          {!dataIsLoading && (
-            <p style={{ margin: "0", color: "#a17b18", fontWeight: "bold" }}>
-              Carregando...
-            </p>
-          )}
-          {serverError && (
-            <p style={{ margin: "0", color: "#e35f5f", fontWeight: "bold" }}>
-              Erro ao carregar dados
-            </p>
-          )}
-          {message && (
-            <p style={{ margin: "0", color: "#899f88", fontWeight: "bold" }}>
-              {message.message}
-            </p>
-          )}
-        </div>
+        <Item.Row alignItems="center">
+          <Link
+            to="/admin/products"
+            style={{ textDecoration: "none", marginTop: "5px" }}
+          >
+            <span className="material-symbols-outlined secondary lg">
+              chevron_left
+            </span>
+          </Link>
+          <Item.Text
+            fontSize={"50px"}
+            fontWeight={"bold"}
+            color="#28356A"
+            margin={0}
+          >
+            Produto
+          </Item.Text>
+        </Item.Row>
         <>
           {dataIsLoading && (
             <form
@@ -216,7 +275,7 @@ const EditProduct = () => {
                   />
                   <Item.Row justifyContent="space-between" width={"65%"}>
                     <Input
-                      type="text"
+                      type="number"
                       label="Quantidade"
                       editInput={true}
                       helperText={errors.quantity?.message?.toString()}
@@ -230,14 +289,18 @@ const EditProduct = () => {
                       {...register("price")}
                     />
                   </Item.Row>
-                  <Input
-                    width={"65%"}
-                    type="text"
-                    label="Categoria"
-                    editInput={true}
-                    helperText={errors.idCategory?.message?.toString()}
-                    {...register("idCategory")}
-                    disabled
+                  <Controller
+                    render={({ field }) => (
+                      <Select width="65%" {...field} label="Categoria">
+                        {category.map((cat: Category) => (
+                          <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                          </option>
+                        ))}
+                      </Select>
+                    )}
+                    control={control}
+                    name="idCategory"
                   />
                 </Item.Col>
                 <Item.Col width={"50%"} gap={"20px"}>
@@ -254,7 +317,13 @@ const EditProduct = () => {
                     label="Imagem"
                     editInput={true}
                     helperText={errors.image?.message?.toString()}
-                    {...register("image")}
+                    {...register("image", {
+                      validate: {
+                        lessThan10MB: (value) =>
+                          (value && value[0]?.size < 10 * 1024 * 1024) ||
+                          "A imagem deve ser menor que 10MB",
+                      },
+                    })}
                   />
                 </Item.Col>
               </Item.Row>
@@ -276,6 +345,10 @@ const EditProduct = () => {
                     <button
                       type="submit"
                       className={styles.button}
+                      onClick={() => {
+                        setServerError(false);
+                        setMessage(null);
+                      }}
                       disabled={isSubmitting}
                     >
                       {isHover ? (
@@ -318,6 +391,48 @@ const EditProduct = () => {
             </form>
           )}
         </>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            margin: "0",
+            width: "100%",
+          }}
+        >
+          {!dataIsLoading && (
+            <p
+              style={{
+                margin: "0",
+                color: "#a17b18",
+                fontWeight: "bold",
+              }}
+            >
+              Carregando...
+            </p>
+          )}
+          {serverError && dataIsLoading && (
+            <p
+              style={{
+                margin: "0",
+                color: "#e35f5f",
+                fontWeight: "bold",
+              }}
+            >
+              {message?.message ? message.message : "Erro no servidor"}
+            </p>
+          )}
+          {message && dataIsLoading && !serverError && (
+            <p
+              style={{
+                margin: "0",
+                color: "#899f88",
+                fontWeight: "bold",
+              }}
+            >
+              {message.message}
+            </p>
+          )}
+        </div>
       </Item.Col>
     </div>
   );

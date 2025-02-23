@@ -7,14 +7,14 @@ const ProductButtons = () => {
     <>
       <button
         className={styles.button_item_selected}
-        onClick={() => navigate("/admin/products")}
+        onClick={() => navigate("/admin/products/new")}
       >
         <span className="material-symbols-outlined primary sd">add</span>
         Adicionar Produto
       </button>
       <button
         className={styles.button_item_inactive}
-        onClick={() => navigate("/admin/category")}
+        onClick={() => navigate("/admin/category/new")}
       >
         <span className="material-symbols-outlined secondary sd">add</span>
         Adicionar Categoria

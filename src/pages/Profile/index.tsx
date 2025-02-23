@@ -4,7 +4,7 @@ import { ProfileWB } from "../../assets";
 import Item from "../../components/ui/Item";
 import { Input } from "../../components/ui/Input/index.tsx";
 import { useAuth } from "../../hooks/useAuth.ts";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import apiService, {
   ApiError,
@@ -144,7 +144,28 @@ const Profile = () => {
         paddingBottom: "10%",
       }}
     >
-      <Item.Col width={"30%"} justifyContent="center" alignItems="center">
+      <Item.Col
+        width={"30%"}
+        justifyContent="center"
+        alignItems="center"
+        position="relative"
+      >
+        <Link
+          to={`${
+            currentUser?.roles.includes("ADMIN") ? "/admin/report" : "/home"
+          }`}
+          style={{
+            textDecoration: "none",
+            marginTop: "5px",
+            position: "absolute",
+            top: "0",
+            left: "-100px",
+          }}
+        >
+          <span className="material-symbols-outlined secondary lg">
+            chevron_left
+          </span>
+        </Link>
         <SmallProfile admin={currentUser?.roles.includes("ADMIN")} />
         <div style={{ display: "flex", justifyContent: "center", margin: "0" }}>
           {!dataIsLoading && (
@@ -280,7 +301,7 @@ const SmallProfile = ({ admin = false }: { admin?: boolean }) => {
             Seu perfil
           </Item.Text>
           <Item.Text fontWeight="bold" margin={0}>
-            {admin ? "Administrador" : "Cliente"}
+            {admin ? <Link to={"/admin"} className={styles.link}>Administrador</Link> : "Cliente"}
           </Item.Text>
         </Item.Col>
       </Item.Row>

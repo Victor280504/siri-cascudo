@@ -36,3 +36,21 @@
   font-weight: medium;
   font-weight: 500;
 }
+
+.message {
+  font-size: 16px;
+  font-weight: 400;
+  color: #313030;
+}
+.message.error {
+  color: #e66f6f;
+}
+.message.success {
+  color: #6db86b;
+}
+.message.warning {
+  color: #D9A644;
+}
+.message.default {
+  color: #313030;
+}

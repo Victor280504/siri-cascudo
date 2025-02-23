@@ -19,7 +19,7 @@ const Category = ({
     <div className={styles.category}>
       <Item.Row justifyContent="flex-start" alignItems="center" gap={"20px"}>
         <h2 className={styles.menu_title}>{category.name}</h2>
-        <button className={styles.button} style={{ padding: "0" }} onClick={() => navigate(`/admin/category/${category.id}`)}>
+        <button className={`${styles.button} ${styles.active}`} style={{ padding: "0" }} onClick={() => navigate(`/admin/category/${category.id}`)}>
           <span className="material-symbols-outlined secondary md">
             chevron_right
           </span>
@@ -29,7 +29,7 @@ const Category = ({
         {products.slice(0, 6).map((product) => (
           <ProductItem key={product.id} id={product.id}>
             <img src={product.image} alt={product.name} width={"40%"} />
-            <Item.Text fontSize={"16px"} fontWeight={"bold"} margin={0}>
+            <Item.Text fontSize={"16px"} textAlign="center" fontWeight={"bold"} margin={0}>
               {product.name}
             </Item.Text>
           </ProductItem>

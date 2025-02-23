@@ -14,10 +14,34 @@ export const adminRoutes = [
     children: [
       {
         path: "",
-        element: <Dashboard />,
+        element: (
+          <>
+            <Dashboard />,
+          </>
+        ),
       },
       {
         path: "products",
+        element: <Dashboard />,
+      },
+      {
+        path: "recipe",
+        element: <Dashboard />,
+      },
+      {
+        path: "stock",
+        element: <Dashboard />,
+      },
+      {
+        path: "report",
+        element: <Dashboard />,
+      },
+      {
+        path: "delivery",
+        element: <Dashboard />,
+      },
+      {
+        path: "products/new",
         element: (
           <>
             <Navbar />
@@ -35,7 +59,7 @@ export const adminRoutes = [
         ),
       },
       {
-        path: "category",
+        path: "category/new",
         element: (
           <>
             <Navbar />

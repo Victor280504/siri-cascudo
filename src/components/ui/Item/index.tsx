@@ -79,6 +79,32 @@ const Text = ({
   );
 };
 
+type colorT = "success" | "error" | "warning" | "info" | "default";
+
+const Message = ({
+  children,
+  color = "default",
+  ...props
+}: PropsWithChildren & React.CSSProperties & { color: colorT }) => {
+  let colorClass = styles.default;
+
+  if (color === "error") {
+    colorClass = styles.error;
+  } else if (color === "warning") {
+    colorClass = styles.warning;
+  } else if (color === "info") {
+    colorClass = styles.info;
+  } else if (color === "success") {
+    colorClass = styles.success;
+  }
+
+  return (
+    <p className={`${styles.message} ${colorClass}`} style={props}>
+      {children}
+    </p>
+  );
+};
+
 const Img = ({
   src,
   alt,
@@ -87,6 +113,6 @@ const Img = ({
   return <img className={styles.img} src={src} alt={alt} style={props} />;
 };
 
-const Item = { Container, Row, Col, Link, Img, Title, Subtitle, Text };
+const Item = { Container, Row, Col, Link, Img, Title, Subtitle, Text, Message };
 
 export default Item;

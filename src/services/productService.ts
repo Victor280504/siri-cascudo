@@ -33,6 +33,12 @@ class productService extends apiService {
       const response = await this.api.post(`${this.path}`, data, config);
       return response.data as ServerCreateResponse;
     } catch (error) {
+      if (error instanceof AxiosError && error.message === "Network Error") {
+        return {
+          error: "Network Error",
+          message: "Network Error",
+        } as ServerError;
+      }
       if (error instanceof AxiosError && error.response) {
         return error.response.data as ServerError;
       }

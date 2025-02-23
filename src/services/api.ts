@@ -2,12 +2,6 @@ import { requestConfig } from "./config";
 import { AxiosError, AxiosInstance } from "axios";
 import { api } from ".";
 
-export interface ServerError {
-  statusCode: number;
-  message: string;
-  errors: ValidationError[];
-}
-
 export interface ValidationError {
   field: string;
   message: string;
@@ -22,6 +16,11 @@ export interface ApiError {
   path: string;
 }
 
+export interface ServerError extends ApiError {
+  statusCode: number;
+  message: string;
+  errors: ValidationError[];
+}
 export interface ServerCreateResponse {
   id: string;
   message: string;

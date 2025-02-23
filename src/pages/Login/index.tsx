@@ -5,7 +5,7 @@ import styles from "./Login.module.css";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Login as LoginType } from "../../types/User";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
@@ -20,10 +20,11 @@ const loginSchema = z.object({
 const Login = () => {
   const { login, error, auth } = useAuth();
   const navigate = useNavigate();
+  const [loginSuccessResponse, setLoginSuccessResponse] = useState<string>();
 
   useEffect(() => {
     if (auth) {
-      navigate("/admin");
+      navigate("/admin/report");
     }
   }, [auth, navigate]);
 
@@ -40,10 +41,12 @@ const Login = () => {
       email,
       password,
     };
-    console.log(admin);
     const res = await login(admin);
     if (res) {
-      navigate("/home");
+      setLoginSuccessResponse("Login realizado com sucesso!");
+      setTimeout(() => {
+        navigate("/admin/report");
+      }, 2000);
     }
   };
 
@@ -96,9 +99,12 @@ const Login = () => {
           {!isSubmitting && <Input type="submit" value="Entrar" />}
           {isSubmitting && <Input type="submit" value="Entrando..." disabled />}
           {error && (
-            <Item.Text color="#000000">
+            <Item.Message color="error">
               {error?.response?.data?.message}
-            </Item.Text>
+            </Item.Message>
+          )}{" "}
+          {loginSuccessResponse && (
+            <Item.Message color="success">{loginSuccessResponse}</Item.Message>
           )}{" "}
           <span style={{ fontWeight: "400", color: "#32356E" }}>
             Não é cliente?{" "}

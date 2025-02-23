@@ -27,3 +27,5 @@ export { default as CombImg } from "./images/comb.png";
 export { default as BebImg } from "./images/beb.png";
 export { default as HambImg } from "./images/hamb.png";
 export { default as SobrImg } from "./images/sobr.png";
+export { default as AdminOverview } from "./images/bob-overview.avif";
+export { default as Sirigueijo } from "./images/sirigueijo.png";

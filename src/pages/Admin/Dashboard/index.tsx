@@ -1,31 +1,21 @@
-import { useState } from "react";
 import styles from "./Dashboard.module.css";
-import navStyles from "../../../components/navigation/Navbar/Navbar.module.css";
-import { useAuth } from "../../../hooks/useAuth";
-import { Logo, ProfileWB } from "../../../assets";
-import UserPopover from "../../../components/navigation/Popover";
-import { Button } from "@radix-ui/themes";
-import { useNavigate } from "react-router-dom";
+import { Logo, Sirigueijo } from "../../../assets";
 import MenuNav from "./components/MenuNav/MenuNav";
-import MenuNavItem from "./components/MenuNav/MenuNavItem";
 import ProductButtons from "./components/ProductMenu/ProductButtons";
 import ProductMenu from "./components/ProductMenu/ProductMenu";
 import { useQuery } from "@tanstack/react-query";
 import productService from "../../../services/productService";
 import categoryService from "../../../services/categoryService";
+import Navbar from "./components/MenuNav/Navbar";
+import Item from "../../../components/ui/Item";
 
-type MenuContentProps =
-  | "Relatorio"
-  | "Pedidos"
-  | "Produtos"
-  | "Estoque"
-  | "Receitas";
+type MenuContentProps = "report" | "delivery" | "products" | "stock" | "recipe";
 
 const Dashboard = () => {
-  const { currentUser } = useAuth();
-  const [actualContent, setActualContent] =
-    useState<MenuContentProps>("Relatorio");
-  const navigate = useNavigate();
+  const urlPath = window.location.pathname;
+  const lastParam = urlPath.substring(urlPath.lastIndexOf("/") + 1);
+
+  console.log();
 
   const {
     data: products,
@@ -46,23 +36,28 @@ const Dashboard = () => {
   });
 
   const actualObject = {
-    Relatorio: {
+    report: {
+      name: "Relatório",
       buttons: <div>Relatorio Buttons</div>,
       content: <div>Relatorio Content</div>,
     },
-    Pedidos: {
+    delivery: {
+      name: "Pedidos",
       buttons: <div>Pedidos Buttons</div>,
       content: <div>Pedidos Content</div>,
     },
-    Produtos: {
+    products: {
+      name: "Produtos",
       buttons: <ProductButtons />,
       content: <ProductMenu categories={category} products={products} />,
     },
-    Estoque: {
+    stock: {
+      name: "Estoque",
       buttons: <div>Estoque Buttons</div>,
       content: <div>Estoque Content</div>,
     },
-    Receitas: {
+    recipe: {
+      name: "Receitas",
       buttons: <div>Receitas Buttons</div>,
       content: <div>Receitas Content</div>,
     },
@@ -82,58 +77,30 @@ const Dashboard = () => {
         <div className={styles.navLogo}>
           <img src={Logo} alt="Logo" height={150} />
         </div>
-        <div className={styles.navContainer}>
-          <div className={styles.navMenu}>
-            <MenuNavItem
-              onClick={() => setActualContent("Relatorio")}
-              icon="summarize"
-            >
-              Relatório
-            </MenuNavItem>
-            <MenuNavItem
-              onClick={() => setActualContent("Pedidos")}
-              icon="receipt_long"
-            >
-              Pedidos
-            </MenuNavItem>
-            <MenuNavItem
-              onClick={() => setActualContent("Produtos")}
-              icon="fastfood"
-            >
-              Produtos
-            </MenuNavItem>
-            <MenuNavItem
-              onClick={() => setActualContent("Estoque")}
-              icon="package_2"
-            >
-              Estoque
-            </MenuNavItem>
-            <MenuNavItem
-              onClick={() => setActualContent("Receitas")}
-              icon="science"
-            >
-              Receitas
-            </MenuNavItem>
-            <MenuNavItem onClick={() => navigate("/home")} icon="home">
-              Home
-            </MenuNavItem>
-          </div>
-          <div className={styles.navProfile}>
-            <UserPopover homeButton={true} slice={false}>
-              <Button radius="full" className={navStyles.button}>
-                <ProfileWB className={navStyles.profile} />
-                Olá, {currentUser?.name.split(" ")[0]}
-              </Button>
-            </UserPopover>
-          </div>
+        <Navbar />
+      </div>
+      {lastParam != "admin" ? (
+        <div className={styles.content_container}>
+          <MenuNav name={actualObject[lastParam as MenuContentProps]?.name}>
+            {actualObject[lastParam as MenuContentProps]?.buttons}
+          </MenuNav>
+          {actualObject[lastParam as MenuContentProps]?.content}
         </div>
-      </div>
-      <div className={styles.content_container}>
-        <MenuNav name={actualContent}>
-          {actualObject[actualContent].buttons}
-        </MenuNav>
-        {actualObject[actualContent].content}
-      </div>
+      ) : (
+        <div style={{  width: '75%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+          <Item.Text
+            fontSize={60}
+            fontWeight="bold"
+            color="#8260d7"
+            textAlign="center"
+            alignSelf="center"
+            marginLeft={"5%"}
+          >
+            Bem vindo Administrador!
+          </Item.Text>
+          <img src={Sirigueijo} alt="" style={{ maxWidth: "50%"}} />
+        </div>
+      )}
     </div>
   );
 };

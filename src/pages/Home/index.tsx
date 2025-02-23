@@ -49,66 +49,21 @@ const Home = () => {
           bottom={-35}
           boxSizing="border-box"
         >
-          <div className={styles.navItem}>
-            <Item.Link
-              to="#sanduiche"
-              width={"100%"}
-              height={"100%"}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              Sanduíches
-            </Item.Link>
-          </div>
-          <div className={styles.navItem}>
-            <Item.Link
-              to="#combos"
-              width={"100%"}
-              height={"100%"}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              Combos
-            </Item.Link>
-          </div>
-          <div className={styles.navItem}>
-            <Item.Link
-              to="#acompanhamento"
-              width={"100%"}
-              height={"100%"}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              Acompanhamentos
-            </Item.Link>
-          </div>
-          <div className={styles.navItem}>
-            <Item.Link
-              to="#bebidas"
-              width={"100%"}
-              height={"100%"}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              Bebidas
-            </Item.Link>
-          </div>
-          <div className={styles.navItem}>
-            <Item.Link
-              to="#sobremesas"
-              width={"100%"}
-              height={"100%"}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              Sobremesas
-            </Item.Link>
-          </div>
+          {category &&
+            category.map((cat: Category) => (
+              <div className={styles.navItem} key={cat.id}>
+                <Item.Link
+                  to={`#${cat.name.toLowerCase()}`}
+                  width={"100%"}
+                  height={"100%"}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  {cat.name}
+                </Item.Link>
+              </div>
+            ))}
         </Item.Row>
       </Item.Col>
       <Item.Container
@@ -145,7 +100,7 @@ const Section = ({
 }: PropsWithChildren & { title?: string; id?: string }) => {
   return (
     <Item.Col alignItems="start" width={"100%"}>
-      <div id={id}>
+      <div id={id?.toLowerCase()}>
         <Item.Subtitle marginBottom={"20px"}>{title}</Item.Subtitle>
       </div>
       {children}
