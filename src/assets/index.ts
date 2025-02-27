@@ -29,3 +29,4 @@ export { default as HambImg } from "./images/hamb.png";
 export { default as SobrImg } from "./images/sobr.png";
 export { default as AdminOverview } from "./images/bob-overview.avif";
 export { default as Sirigueijo } from "./images/sirigueijo.png";
+export { default as CartBase } from "./images/cart-base-image.svg?react";

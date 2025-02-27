@@ -13,11 +13,13 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import UserPopover from "../Popover";
 import { useState } from "react";
+import Menu from "../Cart";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { auth, currentUser } = useAuth();
   const [open, setOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   return (
     <nav className={styles.navbar}>
       <Item.Row
@@ -75,7 +77,10 @@ const Navbar = () => {
               isOpen={open}
               setModalOpen={() => setOpen(!open)}
             >
-              <Button radius="full" className={`${styles.button} ${styles.active}`}>
+              <Button
+                radius="full"
+                className={`${styles.button} ${styles.active}`}
+              >
                 <ProfileWB className={styles.profile} />
                 Olá, {currentUser?.name.split(" ")[0]}
               </Button>
@@ -90,10 +95,22 @@ const Navbar = () => {
               Login
             </Button>
           )}
-          <div className={styles.store}>
-            <Store className={styles.profile} />
-            <div className={styles.storeText}>1</div>
-          </div>
+          {window.location.pathname !== "/" && (
+            <>
+              <Menu
+                isOpen={cartOpen}
+                setModalOpen={() => setCartOpen(!cartOpen)}
+              />
+              <div
+                className={styles.store}
+                onClick={() => setCartOpen(!cartOpen)}
+                style={{ cursor: "pointer" }}
+              >
+                <Store className={styles.profile} />
+                <div className={styles.storeText}>1</div>
+              </div>
+            </>
+          )}
         </Item.Container>
       </Item.Row>
     </nav>

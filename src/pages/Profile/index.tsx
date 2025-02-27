@@ -151,9 +151,7 @@ const Profile = () => {
         position="relative"
       >
         <Link
-          to={`${
-            currentUser?.roles.includes("ADMIN") ? "/admin/report" : "/home"
-          }`}
+          to={`${"/home"}`}
           style={{
             textDecoration: "none",
             marginTop: "5px",
@@ -301,7 +299,13 @@ const SmallProfile = ({ admin = false }: { admin?: boolean }) => {
             Seu perfil
           </Item.Text>
           <Item.Text fontWeight="bold" margin={0}>
-            {admin ? <Link to={"/admin"} className={styles.link}>Administrador</Link> : "Cliente"}
+            {admin ? (
+              <Link to={"/admin"} className={styles.link}>
+                Administrador
+              </Link>
+            ) : (
+              "Cliente"
+            )}
           </Item.Text>
         </Item.Col>
       </Item.Row>

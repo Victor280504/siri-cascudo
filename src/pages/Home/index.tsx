@@ -16,6 +16,8 @@ const Home = () => {
     queryFn: async () => await productService.getAll(),
   });
 
+  const sectionColors = ["#CDD5F6", "#F7DBA5", "#F8F5B8", "#FFD9E4", "#CCECCA"];
+
   const {
     data: category,
     isLoading: categoryLoading,
@@ -84,7 +86,10 @@ const Home = () => {
             );
             return (
               <Section title={cat.name} key={cat.id} id={cat.name}>
-                <SectionList menuItems={menuItems} color="#CDD5F6" />
+                <SectionList
+                  menuItems={menuItems}
+                  color={"#caf9ff"}
+                />
               </Section>
             );
           })}
