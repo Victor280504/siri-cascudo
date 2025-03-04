@@ -15,8 +15,12 @@ const Container = ({ children }: MenuProps) => {
   return <div>{children}</div>;
 };
 
-const Nav = ({ children }: MenuProps) => {
-  return <div className={styles.nav}>{children}</div>;
+const Nav = ({ children, disabled }: MenuProps & { disabled: boolean }) => {
+  return (
+    <div className={`${styles.nav} ${!disabled ? styles.disabled : ""}`}>
+      {children}
+    </div>
+  );
 };
 
 const Footer = ({ children }: MenuProps) => {

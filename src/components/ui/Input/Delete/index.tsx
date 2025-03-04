@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, useRef, useState } from "react";
+import { ButtonHTMLAttributes, useEffect, useRef, useState } from "react";
 import styles from "./Delete.module.css";
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 import { createPortal } from "react-dom";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import Item from "../../Item";
 import { useAuth } from "../../../../hooks/useAuth";
+import { Message } from "../../../../pages/Admin/Dashboard/components/Stock/EditIngredient";
 
 const Delete = ({ style, ...props }: ButtonProps) => {
   const [hover, setHover] = useState(false);
@@ -100,13 +101,13 @@ const DeleteWithConfirmation = ({
 
   const handleConfirm = () => {
     setShowConfirmation(false);
+    setFeedback("Deletando...");
     const res = onDelete(id);
     if ((res as unknown as ApiError).status) {
       setMessage(res as unknown as ApiError);
     } else {
       setMessage(res as unknown as ServerCreateResponse);
     }
-    setFeedback("Deletando...");
 
     setTimeout(() => {
       if (handleLogout) {
@@ -120,17 +121,33 @@ const DeleteWithConfirmation = ({
     setShowConfirmation(false);
   };
 
+  useEffect(() => {
+    if (message) {
+      setTimeout(() => {
+        setMessage(null);
+      }, 3000);
+    }
+  }, [message]);
+  useEffect(() => {
+    if (feedback) {
+      setTimeout(() => {
+        setFeedback(null);
+      }, 3000);
+    }
+  }, [feedback]);
   return (
     <>
       <Delete {...props} onClick={handleDeleteClick} />
       {showConfirmation && (
         <DeleteConfirmation onConfirm={handleConfirm} onCancel={handleCancel} />
       )}
-      {message && <span className={styles.feedback}>{message.message}</span>}
       {feedback && (
-        <Item.Row justifyContent="center" width="100%">
-          <span className={styles.feedback}>{feedback}</span>
-        </Item.Row>
+        <Message
+          message={feedback}
+          variant="INFO"
+          bottom="130px"
+          show={feedback ? true : false}
+        />
       )}
     </>
   );

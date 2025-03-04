@@ -30,3 +30,6 @@ export { default as SobrImg } from "./images/sobr.png";
 export { default as AdminOverview } from "./images/bob-overview.avif";
 export { default as Sirigueijo } from "./images/sirigueijo.png";
 export { default as CartBase } from "./images/cart-base-image.svg?react";
+export { default as RemoveToCart } from "./icons/close.svg?react";
+export { default as AddToCart } from "./icons/plus.svg?react";
+export { default as RemoveOneToCart } from "./icons/minus.svg?react";

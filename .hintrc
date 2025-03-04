@@ -17,6 +17,7 @@
       {
         "image-alt": "off"
       }
-    ]
+    ],
+    "axe/forms": "off"
   }
 }

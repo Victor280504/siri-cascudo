@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 import AuthProvider from "./contexts/AuthProvider";
 import { adminRoutes, userRoutes } from "./pages/Routes";
 import Register from "./pages/Register";
+import { CartProvider } from "./contexts/CartProvider";
 
 const queryClient = new QueryClient();
 
@@ -60,7 +61,9 @@ createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <Theme>
-        <RouterProvider router={router} />
+        <CartProvider>
+          <RouterProvider router={router} />
+        </CartProvider>
       </Theme>
     </AuthProvider>
   </QueryClientProvider>

@@ -14,9 +14,11 @@ import { useAuth } from "../../../hooks/useAuth";
 import UserPopover from "../Popover";
 import { useState } from "react";
 import Menu from "../Cart";
+import useCart from "../../../hooks/useCart";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { cart } = useCart();
   const { auth, currentUser } = useAuth();
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
@@ -107,7 +109,7 @@ const Navbar = () => {
                 style={{ cursor: "pointer" }}
               >
                 <Store className={styles.profile} />
-                <div className={styles.storeText}>1</div>
+                <div className={styles.storeText}>{cart.items.length}</div>
               </div>
             </>
           )}

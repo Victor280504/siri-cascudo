@@ -8,7 +8,7 @@ import apiService, {
 import { requestConfig } from "./config";
 import { api } from ".";
 
-class productService extends apiService {
+class recipeService extends apiService {
   constructor(api: AxiosInstance, path: string) {
     super(api, path);
   }
@@ -28,8 +28,8 @@ class productService extends apiService {
     try {
       const config = requestConfig(false);
       config.headers = config.headers || {};
-      config.headers["Content-Type"] = "multipart/form-data";
-      const response = await this.api.post(`${this.path}`, data, config);
+      config.headers["Content-Type"] = "application/json";
+      const response = await this.api.post(`${this.path}/list`, data, config);
       return response.data as ServerCreateResponse;
     } catch (error) {
       if (error instanceof AxiosError && error.message === "Network Error") {
@@ -45,6 +45,19 @@ class productService extends apiService {
     }
   }
 
+  public async getById<T>(id: string): Promise<T> {
+    try {
+      const response = await this.api.get(
+        `${this.path}/product/${id}`,
+        requestConfig(false)
+      );
+
+      return response.data as T;
+    } catch (error) {
+      throw new Error(`Error fetching data: ${error}`);
+    }
+  }
+
   public async update<T>(
     id: string,
     data: T
@@ -52,7 +65,7 @@ class productService extends apiService {
     try {
       const config = requestConfig(false);
       config.headers = config.headers || {};
-      config.headers["Content-Type"] = "multipart/form-data";
+      config.headers["Content-Type"] = "application/json";
       const response = await this.api.put(`${this.path}/${id}`, data, config);
       return response.data as ServerUpdateResponse;
     } catch (error) {
@@ -67,7 +80,7 @@ class productService extends apiService {
   ): Promise<AxiosError | ApiError | ServerCreateResponse> {
     try {
       const response = await this.api.delete(
-        `${this.path}/${id}`,
+        `${this.path}/product/${id}`,
         requestConfig(false)
       );
       return response.data as ServerCreateResponse;
@@ -80,4 +93,4 @@ class productService extends apiService {
   }
 }
 
-export default new productService(api, "/products");
+export default new recipeService(api, "/recipes");

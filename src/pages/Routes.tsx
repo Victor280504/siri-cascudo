@@ -3,8 +3,11 @@ import Navbar from "../components/navigation/Navbar";
 import EditCategory from "./Admin/Category/EditCategory";
 import RegisterCategory from "./Admin/Category/RegisterCategory";
 import Dashboard from "./Admin/Dashboard";
+import RegisterIngredient from "./Admin/Dashboard/components/Stock/RegisterIngredient";
 import EditProduct from "./Admin/Products/EditProduct";
 import RegisterProduct from "./Admin/Products/RegisterProduct";
+import EditRecipe from "./Admin/Recipe/EditRecipe";
+import RegisterRecipe from "./Admin/Recipe/RegisterRecipe";
 import Profile from "./Profile";
 
 export const adminRoutes = [
@@ -59,6 +62,24 @@ export const adminRoutes = [
         ),
       },
       {
+        path: "recipes/new/:id",
+        element: (
+          <>
+            <Navbar />
+            <RegisterRecipe />,
+          </>
+        ),
+      },
+      {
+        path: "products/recipe/:id",
+        element: (
+          <>
+            <Navbar />
+            <EditRecipe />,
+          </>
+        ),
+      },
+      {
         path: "category/new",
         element: (
           <>
@@ -73,6 +94,15 @@ export const adminRoutes = [
           <>
             <Navbar />
             <EditCategory />,
+          </>
+        ),
+      },
+      {
+        path: "stock/new",
+        element: (
+          <>
+            <Navbar />
+            <RegisterIngredient />,
           </>
         ),
       },

@@ -21,11 +21,11 @@ import { Select } from "../../../components/ui/Input/Select/index.tsx";
 import { useQuery } from "@tanstack/react-query";
 import categoryService from "../../../services/categoryService.ts";
 import { Category } from "../../../types/Products.ts";
+import { Message } from "../Dashboard/components/Stock/EditIngredient.tsx";
 
 const schema = z.object({
   name: z.string(),
   description: z.string(),
-  quantity: z.preprocess((val) => Number(val), z.number()),
   price: z.preprocess((val) => Number(val), z.number()),
   idCategory: z.preprocess((val) => Number(val), z.number()),
   image: z.union([
@@ -118,11 +118,11 @@ const RegisterProduct = () => {
         setMessage(res as ServerUpdateResponse);
       }
     } else {
-      if (res as ServerUpdateResponse) {
-        setMessage(res as ServerUpdateResponse);
+      if (res as ServerCreateResponse) {
+        setMessage(res as ServerCreateResponse);
         setTimeout(() => {
           setMessage(null);
-          navigate("/admin/products");
+          navigate(`/admin/recipes/new/${(res as ServerCreateResponse).id}`);
         }, 3000);
       }
     }
@@ -176,6 +176,7 @@ const RegisterProduct = () => {
             </span>
           </Link>
           <Item.Text
+            fontFamily="SFCompact"
             fontSize={"50px"}
             fontWeight={"bold"}
             color="#28356A"
@@ -188,6 +189,7 @@ const RegisterProduct = () => {
           <form
             className={productStyles.form}
             onSubmit={handleSubmit(onSubmit)}
+            style={{ marginTop: "5%" }}
           >
             <Item.Row alignItems="start">
               <Item.Col width={"50%"} gap={"20px"}>
@@ -201,15 +203,6 @@ const RegisterProduct = () => {
                   {...register("name")}
                 />
                 <Item.Row justifyContent="space-between" width={"65%"}>
-                  <Input
-                    required
-                    type="number"
-                    label="Quantidade"
-                    width={"40%"}
-                    editInput={true}
-                    helperText={errors.quantity?.message?.toString()}
-                    {...register("quantity")}
-                  />
                   <Input
                     required
                     type="number"
@@ -331,14 +324,18 @@ const RegisterProduct = () => {
           }}
         >
           {serverError && (
-            <p style={{ margin: "0", color: "#e35f5f", fontWeight: "bold" }}>
-              {message?.message ? message.message : "Erro no servidor"}{" "}
-            </p>
+            <Message
+              message={message?.message || "Erro inesperado no servidor"}
+              variant={message?.flag || "DANGER"}
+              show={serverError}
+            />
           )}
           {message && !serverError && (
-            <p style={{ margin: "0", color: "#899f88", fontWeight: "bold" }}>
-              {message.message}
-            </p>
+            <Message
+              message={message.message}
+              variant={message.flag}
+              show={!serverError}
+            />
           )}
         </div>
       </Item.Col>

@@ -10,7 +10,7 @@ const MenuNav = ({ name, children }: PropsWithChildren & { name: string }) => {
       marginTop={"20px"}
       padding={"20px 30px"}
     >
-      <Item.Subtitle color="#3C227C" margin={0} fontSize={"60px"}>
+      <Item.Subtitle color="#3C227C" fontFamily="SFCompact" margin={0} fontSize={"60px"}>
         {name}
       </Item.Subtitle>
       <Item.Row gap={"15px"} marginRight={"10px"}>

@@ -24,14 +24,11 @@ import { Category, Product } from "../../../types/Products.ts";
 import { Select } from "../../../components/ui/Input/Select/index.tsx";
 import { useQuery } from "@tanstack/react-query";
 import categoryService from "../../../services/categoryService.ts";
+import { Message } from "../Dashboard/components/Stock/EditIngredient.tsx";
 
 const schema = z.object({
   name: z.string().optional(),
   description: z.string().optional(),
-  quantity: z
-    .string()
-    .transform((val) => parseInt(val, 10))
-    .optional(),
   price: z
     .string()
     .transform((val) => parseFloat(val))
@@ -75,7 +72,6 @@ const EditProduct = () => {
         return {
           name: product?.name,
           description: product?.description,
-          quantity: product?.quantity.toString(),
           price: product?.price.toString(),
           idCategory: product?.idCategory.toString(),
           image: product?.image ?? "",
@@ -163,7 +159,6 @@ const EditProduct = () => {
         setMessage(res as ServerUpdateResponse);
         setTimeout(() => {
           setMessage(null);
-          navigate("/admin/products");
         }, 3000);
       }
     }
@@ -239,29 +234,54 @@ const EditProduct = () => {
         justifyContent="center"
         alignItems="start"
       >
-        <Item.Row alignItems="center">
-          <Link
-            to="/admin/products"
-            style={{ textDecoration: "none", marginTop: "5px" }}
-          >
-            <span className="material-symbols-outlined secondary lg">
-              chevron_left
-            </span>
-          </Link>
-          <Item.Text
-            fontSize={"50px"}
-            fontWeight={"bold"}
-            color="#28356A"
-            margin={0}
-          >
-            Produto
-          </Item.Text>
+        <Item.Row width='100%' alignItems="center" justifyContent="space-between">
+          <Item.Row alignItems="center">
+            <Link
+              to="/admin/products"
+              style={{ textDecoration: "none", marginTop: "5px" }}
+            >
+              <span className="material-symbols-outlined secondary lg">
+                chevron_left
+              </span>
+            </Link>
+            <Item.Text
+              fontFamily="SFCompact"
+              fontSize={"50px"}
+              fontWeight={"bold"}
+              color="#28356A"
+              margin={0}
+            >
+              Produto
+            </Item.Text>
+          </Item.Row>
+          <Item.Row alignItems="center">
+            <Item.Text
+              fontFamily="SFCompact"
+              fontSize={"50px"}
+              fontWeight={"bold"}
+              color="#28356A"
+              margin={0}
+            >
+              Receita
+            </Item.Text>
+            <Link
+              to={`/admin/products/recipe/${id}`}
+              style={{ textDecoration: "none", marginTop: "10px" }}
+            >
+              <span className="material-symbols-outlined secondary lg">
+                chevron_right
+              </span>
+            </Link>
+          </Item.Row>
         </Item.Row>
         <>
           {dataIsLoading && (
             <form
               className={productStyles.form}
               onSubmit={handleSubmit(onSubmit)}
+              style={{
+                marginTop: "5%",
+              }}
             >
               <Item.Row alignItems="start">
                 <Item.Col width={"50%"} gap={"20px"}>
@@ -274,13 +294,6 @@ const EditProduct = () => {
                     {...register("name")}
                   />
                   <Item.Row justifyContent="space-between" width={"65%"}>
-                    <Input
-                      type="number"
-                      label="Quantidade"
-                      editInput={true}
-                      helperText={errors.quantity?.message?.toString()}
-                      {...register("quantity")}
-                    />
                     <Input
                       type="text"
                       label="Preço"
@@ -334,7 +347,7 @@ const EditProduct = () => {
                 <DeleteWithConfirmation
                   id={id || ""}
                   onDelete={onDelete}
-                  link="/"
+                  link="admin/products"
                   handleLogout={false}
                 />
                 {isDirty ? (
@@ -400,37 +413,25 @@ const EditProduct = () => {
           }}
         >
           {!dataIsLoading && (
-            <p
-              style={{
-                margin: "0",
-                color: "#a17b18",
-                fontWeight: "bold",
-              }}
-            >
-              Carregando...
-            </p>
+            <Message
+              message={"Carregando..."}
+              variant={"INFO"}
+              show={!dataIsLoading}
+            />
           )}
           {serverError && dataIsLoading && (
-            <p
-              style={{
-                margin: "0",
-                color: "#e35f5f",
-                fontWeight: "bold",
-              }}
-            >
-              {message?.message ? message.message : "Erro no servidor"}
-            </p>
+            <Message
+              message={message?.message || "Erro inesperado no servidor"}
+              variant={message?.flag || "DANGER"}
+              show={serverError}
+            />
           )}
           {message && dataIsLoading && !serverError && (
-            <p
-              style={{
-                margin: "0",
-                color: "#899f88",
-                fontWeight: "bold",
-              }}
-            >
-              {message.message}
-            </p>
+            <Message
+              message={message.message}
+              variant={message.flag}
+              show={!serverError}
+            />
           )}
         </div>
       </Item.Col>

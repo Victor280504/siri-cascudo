@@ -8,7 +8,7 @@ import apiService, {
 import { requestConfig } from "./config";
 import { api } from ".";
 
-class productService extends apiService {
+class ingredientService extends apiService {
   constructor(api: AxiosInstance, path: string) {
     super(api, path);
   }
@@ -28,7 +28,7 @@ class productService extends apiService {
     try {
       const config = requestConfig(false);
       config.headers = config.headers || {};
-      config.headers["Content-Type"] = "multipart/form-data";
+      config.headers["Content-Type"] = "application/json";
       const response = await this.api.post(`${this.path}`, data, config);
       return response.data as ServerCreateResponse;
     } catch (error) {
@@ -52,7 +52,7 @@ class productService extends apiService {
     try {
       const config = requestConfig(false);
       config.headers = config.headers || {};
-      config.headers["Content-Type"] = "multipart/form-data";
+      config.headers["Content-Type"] = "application/json";
       const response = await this.api.put(`${this.path}/${id}`, data, config);
       return response.data as ServerUpdateResponse;
     } catch (error) {
@@ -80,4 +80,4 @@ class productService extends apiService {
   }
 }
 
-export default new productService(api, "/products");
+export default new ingredientService(api, "/ingredients");

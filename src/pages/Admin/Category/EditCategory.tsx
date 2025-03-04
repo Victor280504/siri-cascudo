@@ -20,6 +20,7 @@ import { AxiosError } from "axios";
 import { useParams } from "react-router-dom";
 import { Product } from "../../../types/Products.ts";
 import categoryService from "../../../services/categoryService.ts";
+import { Message } from "../Dashboard/components/Stock/EditIngredient.tsx";
 
 const schema = z.object({
   name: z.string().optional(),
@@ -166,6 +167,7 @@ const EditCategory = () => {
             </span>
           </Link>
           <Item.Text
+            fontFamily="SFCompact"
             fontSize={"50px"}
             fontWeight={"bold"}
             color="#28356A"
@@ -176,19 +178,25 @@ const EditCategory = () => {
         </Item.Row>
         <div style={{ display: "flex", justifyContent: "center", margin: "0" }}>
           {!dataIsLoading && (
-            <p style={{ margin: "0", color: "#a17b18", fontWeight: "bold" }}>
-              Carregando...
-            </p>
+            <Message
+              message={"Carregando..."}
+              variant={"INFO"}
+              show={!dataIsLoading}
+            />
           )}
           {serverError && (
-            <p style={{ margin: "0", color: "#e35f5f", fontWeight: "bold" }}>
-              Erro ao carregar dados
-            </p>
+            <Message
+              message={message?.message || "Erro inesperado no servidor"}
+              variant={message?.flag || "DANGER"}
+              show={!serverError}
+            />
           )}
           {message && (
-            <p style={{ margin: "0", color: "#899f88", fontWeight: "bold" }}>
-              {message.message}
-            </p>
+            <Message
+              message={message.message}
+              variant={message.flag}
+              show={!serverError}
+            />
           )}
         </div>
         <>
@@ -196,6 +204,7 @@ const EditCategory = () => {
             <form
               className={categoryStyles.form}
               onSubmit={handleSubmit(onSubmit)}
+              style={{ marginTop: "5%" }}
             >
               <Input
                 width={"100%"}

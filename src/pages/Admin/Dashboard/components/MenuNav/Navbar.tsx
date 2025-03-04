@@ -24,9 +24,6 @@ const Navbar = () => {
         <MenuNavItem link={"/admin/stock"} icon="package_2">
           Estoque
         </MenuNavItem>
-        <MenuNavItem link="/admin/recipe" icon="science">
-          Receitas
-        </MenuNavItem>
         <MenuNavItem link="/home" icon="home">
           Home
         </MenuNavItem>

@@ -7,6 +7,16 @@ export interface ValidationError {
   message: string;
 }
 
+export type alertColor =
+  | "PRIMARY"
+  | "SECONDARY"
+  | "SUCCESS"
+  | "DANGER"
+  | "WARNING"
+  | "INFO"
+  | "LIGHT"
+  | "DARK";
+
 export interface ApiError {
   timestamp: Date;
   status: number;
@@ -14,6 +24,7 @@ export interface ApiError {
   message: string;
   details: string;
   path: string;
+  flag: alertColor;
 }
 
 export interface ServerError extends ApiError {
@@ -24,12 +35,14 @@ export interface ServerError extends ApiError {
 export interface ServerCreateResponse {
   id: string;
   message: string;
+  flag: alertColor;
 }
 
 export interface ServerUpdateResponse {
   id: string;
   message: string;
   data: object;
+  flag: alertColor;
 }
 
 export interface PaginatedData<Data> {

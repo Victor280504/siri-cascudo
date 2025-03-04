@@ -1,15 +1,20 @@
 import styles from "./Dashboard.module.css";
 import { Logo, Sirigueijo } from "../../../assets";
 import MenuNav from "./components/MenuNav/MenuNav";
-import ProductButtons from "./components/ProductMenu/ProductButtons";
+import {
+  ProductButtons,
+  StockButtons,
+} from "./components/ProductMenu/ProductButtons";
 import ProductMenu from "./components/ProductMenu/ProductMenu";
 import { useQuery } from "@tanstack/react-query";
 import productService from "../../../services/productService";
 import categoryService from "../../../services/categoryService";
 import Navbar from "./components/MenuNav/Navbar";
 import Item from "../../../components/ui/Item";
+import StockMenu from "./components/Stock/StockMenu";
+import ingredientService from "../../../services/ingredientService";
 
-type MenuContentProps = "report" | "delivery" | "products" | "stock" | "recipe";
+type MenuContentProps = "report" | "delivery" | "products" | "stock" ;
 
 const Dashboard = () => {
   const urlPath = window.location.pathname;
@@ -35,6 +40,15 @@ const Dashboard = () => {
     queryFn: async () => await categoryService.getAll(),
   });
 
+  const {
+    data: ingredient,
+    isLoading: ingredientLoading,
+    isError: ingredientError,
+  } = useQuery({
+    queryKey: ["ingredient/all"],
+    queryFn: async () => await ingredientService.getAll(),
+  });
+
   const actualObject = {
     report: {
       name: "Relatório",
@@ -53,21 +67,16 @@ const Dashboard = () => {
     },
     stock: {
       name: "Estoque",
-      buttons: <div>Estoque Buttons</div>,
-      content: <div>Estoque Content</div>,
-    },
-    recipe: {
-      name: "Receitas",
-      buttons: <div>Receitas Buttons</div>,
-      content: <div>Receitas Content</div>,
+      buttons: <StockButtons />,
+      content: <StockMenu ingredients={ingredient} />,
     },
   };
 
-  if (productsLoading || categoryLoading) {
+  if (productsLoading || categoryLoading || ingredientLoading) {
     return <div>Loading...</div>;
   }
 
-  if (productsError || categoryError) {
+  if (productsError || categoryError || ingredientError) {
     return <div>Error...</div>;
   }
 
@@ -87,8 +96,17 @@ const Dashboard = () => {
           {actualObject[lastParam as MenuContentProps]?.content}
         </div>
       ) : (
-        <div style={{  width: '75%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+        <div
+          style={{
+            width: "75%",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Item.Text
+            fontFamily="SFCompact"
             fontSize={60}
             fontWeight="bold"
             color="#8260d7"
@@ -98,7 +116,7 @@ const Dashboard = () => {
           >
             Bem vindo Administrador!
           </Item.Text>
-          <img src={Sirigueijo} alt="" style={{ maxWidth: "50%"}} />
+          <img src={Sirigueijo} alt="" style={{ maxWidth: "50%" }} />
         </div>
       )}
     </div>

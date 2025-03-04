@@ -1,3 +1,12 @@
+@font-face {
+  font-family: "SFCompact";
+  src: url("../assets/fonts/SF-Compact-Rounded-Heavy.ttf") format("truetype");
+}
+@font-face {
+  font-family: "SFCompactMedium";
+  src: url("../assets/fonts/SF-Compact-Rounded-Medium.ttf") format("truetype");
+}
+
 .material-symbols-outlined {
   font-family: "Material Symbols Outlined";
   font-weight: normal;

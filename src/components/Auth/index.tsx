@@ -29,7 +29,6 @@ const ProtectedRoute = ({ allowedRole }: ProtectedRouteProps) => {
       </div>
     );
   }
-  console.log(currentUser?.roles, allowedRole);
   if (
     !currentUser ||
     (allowedRole &&

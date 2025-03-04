@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styles from "../../Dashboard.module.css";
 
-const ProductButtons = () => {
+export const ProductButtons = () => {
   const navigate = useNavigate();
   return (
     <>
@@ -23,4 +23,18 @@ const ProductButtons = () => {
   );
 };
 
-export default ProductButtons;
+export const StockButtons = () => {
+  const navigate = useNavigate();
+  return (
+    <>
+      <button
+        className={styles.button_item_selected}
+        style={{ width: "100%", padding: "15px" }}
+        onClick={() => navigate("/admin/stock/new")}
+      >
+        <span className="material-symbols-outlined primary sd">add</span>
+        Adicionar Ingrediente
+      </button>
+    </>
+  );
+};
