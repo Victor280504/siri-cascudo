@@ -187,6 +187,7 @@ const IngredientForm = ({
           <StockInput
             title="description"
             type="text"
+            textAlign="left"
             defaultValue={ingredient?.description || ""}
             helperText={errors.description?.message?.toString() || ""}
             {...register("description")}

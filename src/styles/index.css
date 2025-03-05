@@ -7,6 +7,12 @@
   src: url("../assets/fonts/SF-Compact-Rounded-Medium.ttf") format("truetype");
 }
 
+/* @media (min-width: 1366px) {
+  body {
+    zoom: 80%;
+  }
+} */
+
 .material-symbols-outlined {
   font-family: "Material Symbols Outlined";
   font-weight: normal;
@@ -45,6 +51,9 @@
 }
 .material-symbols-outlined.purple {
   color: #8260d7;
+}
+.material-symbols-outlined.blue {
+  color: #23c4db;
 }
 .material-symbols-outlined.edit {
   color: #93a9e7;

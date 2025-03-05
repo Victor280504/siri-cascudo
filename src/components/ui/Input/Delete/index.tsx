@@ -79,6 +79,9 @@ interface DeleteWithConfirmationProps extends ButtonProps {
   ) => Promise<AxiosError | ApiError | ServerCreateResponse>;
   link?: string;
   handleLogout?: boolean;
+  onlyDelete?: boolean;
+  alternativeMessage?: ServerCreateResponse | ApiError | null;
+  setAlternativeMessage?: () => void;
 }
 
 const DeleteWithConfirmation = ({
@@ -86,6 +89,9 @@ const DeleteWithConfirmation = ({
   onDelete,
   link,
   handleLogout = false,
+  onlyDelete = false,
+  alternativeMessage,
+  setAlternativeMessage,
   ...props
 }: DeleteWithConfirmationProps) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -128,6 +134,14 @@ const DeleteWithConfirmation = ({
       }, 3000);
     }
   }, [message]);
+
+  useEffect(() => {
+    if (message) {
+      setTimeout(() => {
+        setAlternativeMessage && setAlternativeMessage();
+      }, 3000);
+    }
+  }, [alternativeMessage]);
   useEffect(() => {
     if (feedback) {
       setTimeout(() => {
@@ -147,6 +161,25 @@ const DeleteWithConfirmation = ({
           variant="INFO"
           bottom="130px"
           show={feedback ? true : false}
+        />
+      )}
+      {message &&
+        (message.message != "" || message != null || message != undefined) &&
+        !feedback &&
+        onlyDelete && (
+          <Message
+            message={message.message}
+            variant={message.flag}
+            bottom="50px"
+            show={message ? true : false}
+          />
+        )}
+      {onlyDelete && alternativeMessage && (
+        <Message
+          message={alternativeMessage.message}
+          variant={alternativeMessage.flag}
+          bottom="50px"
+          show={alternativeMessage ? true : false}
         />
       )}
     </>

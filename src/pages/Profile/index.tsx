@@ -30,7 +30,7 @@ const schema = z.object({
 });
 
 const Profile = () => {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, fetchCurrentUser } = useAuth();
   const service = new apiService(api, "/user");
   const navigate = useNavigate();
   const [dataIsLoading, setdataIsLoading] = useState(false);
@@ -92,6 +92,7 @@ const Profile = () => {
       if (res as ServerUpdateResponse) {
         setMessage(res as ServerUpdateResponse);
         setTimeout(() => {
+          fetchCurrentUser();
           setMessage(null);
         }, 3000);
       }
@@ -291,6 +292,7 @@ const SmallProfile = ({ admin = false }: { admin?: boolean }) => {
         <Item.Col width={"65%"} justifyContent="end" alignItems="baseline">
           <Item.Text
             color="#23C4DB"
+            fontFamily="SFCompact"
             fontSize={"50px"}
             lineHeight={1}
             fontWeight="bold"

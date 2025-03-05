@@ -33,3 +33,5 @@ export { default as CartBase } from "./images/cart-base-image.svg?react";
 export { default as RemoveToCart } from "./icons/close.svg?react";
 export { default as AddToCart } from "./icons/plus.svg?react";
 export { default as RemoveOneToCart } from "./icons/minus.svg?react";
+export { default as History } from "./icons/history.svg?react";
+export { default as EditIcon } from "./icons/edit.svg?react";

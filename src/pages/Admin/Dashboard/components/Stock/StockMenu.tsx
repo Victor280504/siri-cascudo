@@ -17,9 +17,9 @@ const StockMenu = ({ ingredients }: { ingredients: Ingredient[] }) => {
               fontWeight={"400"}
               borderRadius={"20px 0px 0px 0px"}
               textAlign="left"
-              paddingLeft="7.3%"
+              paddingLeft="2%"
             >
-              Produto
+              Ingrediente
             </Item.TH>
             <Item.TH width="20%" fontWeight={"400"}>
               Quantidade

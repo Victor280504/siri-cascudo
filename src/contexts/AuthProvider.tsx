@@ -18,6 +18,7 @@ type AuthContext = {
   error: requestError | null;
   login: (data: Login) => Promise<boolean | undefined>;
   logout: () => Promise<void>;
+  fetchCurrentUser: () => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContext | undefined>(undefined);
@@ -118,6 +119,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   return (
     <AuthContext.Provider
       value={{
+        fetchCurrentUser,
         login,
         logout,
         auth,

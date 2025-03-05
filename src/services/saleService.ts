@@ -8,7 +8,7 @@ import apiService, {
 import { requestConfig } from "./config";
 import { api } from ".";
 
-class recipeService extends apiService {
+class saleService extends apiService {
   constructor(api: AxiosInstance, path: string) {
     super(api, path);
   }
@@ -29,7 +29,7 @@ class recipeService extends apiService {
       const config = requestConfig(false);
       config.headers = config.headers || {};
       config.headers["Content-Type"] = "application/json";
-      const response = await this.api.post(`${this.path}/list`, data, config);
+      const response = await this.api.post(`${this.path}`, data, config);
       return response.data as ServerCreateResponse;
     } catch (error) {
       if (error instanceof AxiosError && error.message === "Network Error") {
@@ -48,7 +48,7 @@ class recipeService extends apiService {
   public async getById<T>(id: string): Promise<T> {
     try {
       const response = await this.api.get(
-        `${this.path}/product/${id}`,
+        `${this.path}/${id}`,
         requestConfig(false)
       );
 
@@ -58,11 +58,36 @@ class recipeService extends apiService {
     }
   }
 
-
-  public async getByIdWithIngredient<T>(id: string): Promise<T> {
+  public async getReport<T>(): Promise<T> {
     try {
       const response = await this.api.get(
-        `${this.path}/product/names/${id}`,
+        `${this.path}/report`,
+        requestConfig(false)
+      );
+
+      return response.data as T;
+    } catch (error) {
+      throw new Error(`Error fetching data: ${error}`);
+    }
+  }
+
+  public async getAllByUserId<T>(id: string): Promise<T> {
+    try {
+      const response = await this.api.get(
+        `${this.path}/user/${id}`,
+        requestConfig(false)
+      );
+
+      return response.data as T;
+    } catch (error) {
+      throw new Error(`Error fetching data: ${error}`);
+    }
+  }
+
+  public async getByIdWithDetails<T>(id: string): Promise<T> {
+    try {
+      const response = await this.api.get(
+        `${this.path}/detail/${id}`,
         requestConfig(false)
       );
 
@@ -94,7 +119,7 @@ class recipeService extends apiService {
   ): Promise<AxiosError | ApiError | ServerCreateResponse> {
     try {
       const response = await this.api.delete(
-        `${this.path}/product/${id}`,
+        `${this.path}/${id}`,
         requestConfig(false)
       );
       return response.data as ServerCreateResponse;
@@ -107,4 +132,4 @@ class recipeService extends apiService {
   }
 }
 
-export default new recipeService(api, "/recipes");
+export default new saleService(api, "/sales");

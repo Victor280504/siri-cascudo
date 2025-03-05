@@ -25,12 +25,15 @@ const Row = ({
   );
 };
 
-const Col = ({
-  children,
-  ...props
-}: PropsWithChildren & React.CSSProperties) => {
+type ColProps = PropsWithChildren &
+  React.CSSProperties & {
+    children: React.ReactNode;
+    hasScrollBar?: boolean;
+  };
+
+const Col = ({ children, hasScrollBar = false, ...props }: ColProps) => {
   return (
-    <div className={styles.col} style={props}>
+    <div className={`${styles.col} ${hasScrollBar && styles.scrollBar}`} style={props}>
       {children}
     </div>
   );

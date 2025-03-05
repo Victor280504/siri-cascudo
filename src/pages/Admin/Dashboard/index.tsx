@@ -13,8 +13,13 @@ import Navbar from "./components/MenuNav/Navbar";
 import Item from "../../../components/ui/Item";
 import StockMenu from "./components/Stock/StockMenu";
 import ingredientService from "../../../services/ingredientService";
+import SaleMenu from "../Sale";
+import saleService from "../../../services/saleService";
+import ReportMenu from "./Report";
+import { Spinner } from "react-bootstrap";
+import { Report } from "../../../types/Sale";
 
-type MenuContentProps = "report" | "delivery" | "products" | "stock" ;
+type MenuContentProps = "report" | "delivery" | "products" | "stock";
 
 const Dashboard = () => {
   const urlPath = window.location.pathname;
@@ -49,16 +54,34 @@ const Dashboard = () => {
     queryFn: async () => await ingredientService.getAll(),
   });
 
+  const {
+    data: sales,
+    isLoading: salesLoading,
+    isError: salesError,
+  } = useQuery({
+    queryKey: ["sales/all"],
+    queryFn: async () => await saleService.getAll(),
+  });
+
+  const {
+    data: report,
+    isLoading: reportLoading,
+    isError: reportError,
+  } = useQuery({
+    queryKey: ["report/all"],
+    queryFn: async () => await saleService.getReport<Report>(),
+  });
+
   const actualObject = {
     report: {
       name: "Relatório",
-      buttons: <div>Relatorio Buttons</div>,
-      content: <div>Relatorio Content</div>,
+      buttons: <div></div>,
+      content: report ? <ReportMenu report={report} /> : null,
     },
     delivery: {
       name: "Pedidos",
-      buttons: <div>Pedidos Buttons</div>,
-      content: <div>Pedidos Content</div>,
+      buttons: <div></div>,
+      content: <SaleMenu sales={sales} />,
     },
     products: {
       name: "Produtos",
@@ -72,12 +95,38 @@ const Dashboard = () => {
     },
   };
 
-  if (productsLoading || categoryLoading || ingredientLoading) {
-    return <div>Loading...</div>;
+  if (
+    productsLoading ||
+    categoryLoading ||
+    ingredientLoading ||
+    salesLoading ||
+    reportLoading
+  ) {
+    return <Spinner animation="border" variant={"dark"} />;
   }
 
-  if (productsError || categoryError || ingredientError) {
-    return <div>Error...</div>;
+  if (
+    productsError ||
+    categoryError ||
+    ingredientError ||
+    salesError ||
+    reportError
+  ) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          color: "#ff4d4f",
+        }}
+      >
+        <h1>Oops! Something went wrong.</h1>
+        <p>We couldn't load the data. Please try again later.</p>
+      </div>
+    );
   }
 
   return (

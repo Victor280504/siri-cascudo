@@ -9,8 +9,10 @@ import { z } from "zod";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiService, {
+  ApiError,
   ServerCreateResponse,
   ServerError,
+  ServerUpdateResponse,
   ValidationError,
 } from "../../services/api";
 import { api } from "../../services";
@@ -56,12 +58,21 @@ const Register = () => {
     const service = new apiService(api, "/auth/register");
     const res = await service.create<User>(sendData);
 
-    if ((res as ServerError).errors) {
-      (res as ServerError).errors.forEach((error: ValidationError) => {
-        setError(error.field, {
-          message: error.message,
+    if ((res as ServerError).errors || (res as ServerError).error) {
+      if ((res as ServerError).errors) {
+        (res as ServerError).errors.forEach((error: ValidationError) => {
+          setError(error.field as keyof typeof schema.shape, {
+            message: error.message,
+          });
         });
-      });
+      }
+      if (
+        ((res as ServerError).error &&
+          (res as ServerError).message != "Validation failed") ||
+        (res as ApiError).message == "Network Error"
+      ) {
+        setMessage(res as ServerUpdateResponse);
+      }
     } else {
       if (res as ServerCreateResponse) {
         setMessage(res as ServerCreateResponse);
@@ -172,7 +183,7 @@ const Register = () => {
               </span>
               {message && (
                 <Item.Text
-                  color="#e35f5f"
+                  color={message.flag === "SUCCESS" ? "#4CAF50" : "#e35f5f"}
                   margin={0}
                   marginTop={"10px"}
                   fontSize={"16px"}

@@ -24,7 +24,7 @@ const Login = () => {
 
   useEffect(() => {
     if (auth) {
-      navigate("/admin/report");
+      navigate("/admin");
     }
   }, [auth, navigate]);
 
@@ -45,7 +45,7 @@ const Login = () => {
     if (res) {
       setLoginSuccessResponse("Login realizado com sucesso!");
       setTimeout(() => {
-        navigate("/admin/report");
+        navigate("/admin");
       }, 2000);
     }
   };
@@ -79,7 +79,7 @@ const Login = () => {
           <img src={Logo} alt="Logo" width={90} />
         </Item.Link>
         <form className={styles.form} onSubmit={handleSubmit(loginAdmin)}>
-          <Item.Subtitle color="#32356E" marginBottom={"40px"}>
+          <Item.Subtitle fontFamily="SFCompact" color="#32356E" marginBottom={"40px"}>
             Olá, Marujo!
           </Item.Subtitle>
           <Input

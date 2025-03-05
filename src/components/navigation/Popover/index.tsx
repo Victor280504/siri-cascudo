@@ -1,5 +1,5 @@
 import { Popover } from "@radix-ui/themes";
-import { PopoverSlice, ProfileWB } from "../../../assets";
+import { History, PopoverSlice, ProfileWB } from "../../../assets";
 import styles from "../../../pages/Admin/Dashboard/Dashboard.module.css";
 import Item from "../../ui/Item";
 import { useAuth } from "../../../hooks/useAuth";
@@ -17,6 +17,7 @@ PropsWithChildren & {
   slice?: boolean;
   setModalOpen?: () => void;
 }) => {
+  const { currentUser } = useAuth();
   return (
     <Popover.Root>
       <Popover.Trigger>{children}</Popover.Trigger>
@@ -26,7 +27,7 @@ PropsWithChildren & {
             className={`${styles.slice} ${homeButton && styles.right}`}
           />
         )}
-        <PopoverContent wallet="100">
+        <PopoverContent wallet={currentUser?.wallet?.toString() || "0"}>
           {/* <button
             className={`${styles.button} ${styles.active}`}`}
             style={{ padding: "0", gap: "20px" }}
@@ -59,7 +60,7 @@ const PopoverContent = ({
     <div className={styles.popover}>
       <Item.Row width={"100%"} alignItems="center" gap={"20px"}>
         <button
-          className={`${styles.button} ${styles.active}`}
+          className={`${styles.button}  ${styles.active} ${styles.home}`}
           style={{ padding: "0", gap: "20px" }}
           onClick={() => navigate("/user/profile")}
         >
@@ -71,6 +72,28 @@ const PopoverContent = ({
             margin={0}
           >
             Perfil
+          </Item.Text>
+        </button>
+      </Item.Row>
+      <Item.Row width={"100%"} alignItems="center" gap={"20px"}>
+        <button
+          className={`${styles.button} ${styles.active}  ${styles.home}`}
+          style={{
+            padding: "0",
+            gap: "20px",
+            paddingTop: "15px",
+            paddingBottom: "15px",
+          }}
+          onClick={() => navigate("/user/history")}
+        >
+          <History width={"47px"} fill="#D9A644" />
+          <Item.Text
+            color="#32356E"
+            fontSize={"20px"}
+            fontWeight="500"
+            margin={0}
+          >
+            Histórico de Pedidos
           </Item.Text>
         </button>
       </Item.Row>

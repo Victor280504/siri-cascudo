@@ -111,8 +111,6 @@ const EditProduct = () => {
       return;
     }
 
-    console.log(newData);
-
     if (newData.image == undefined) {
       delete newData.image;
     }

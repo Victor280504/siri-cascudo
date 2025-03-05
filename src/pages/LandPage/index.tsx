@@ -31,8 +31,8 @@ const LandPage = () => {
           alignItems="flex-start"
           gap={"15px"}
         >
-          <Item.Title color="#23C4DB">Caiu na rede, é peixe!</Item.Title>
-          <Item.Subtitle color="#24C5DB">
+          <Item.Title color="#23C4DB" fontFamily="SFCompact">Caiu na rede, é peixe!</Item.Title>
+          <Item.Subtitle color="#24C5DB"  fontFamily="SFCompactMedium" fontWeight={200}>
             Novo Hambúrguer de Peixe
           </Item.Subtitle>
           <Item.Text width={"566px"} color="#AD7405">

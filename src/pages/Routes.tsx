@@ -8,6 +8,8 @@ import EditProduct from "./Admin/Products/EditProduct";
 import RegisterProduct from "./Admin/Products/RegisterProduct";
 import EditRecipe from "./Admin/Recipe/EditRecipe";
 import RegisterRecipe from "./Admin/Recipe/RegisterRecipe";
+import History from "./History";
+import PaymentScreen from "./Payment";
 import Profile from "./Profile";
 
 export const adminRoutes = [
@@ -121,6 +123,23 @@ export const userRoutes = [
           <>
             <Navbar />
             <Profile />
+          </>
+        ),
+      },
+      {
+        path: "sale/payment",
+        element: (
+          <>
+            <PaymentScreen />
+          </>
+        ),
+      },
+      {
+        path: "history",
+        element: (
+          <>
+            <Navbar />
+            <History />
           </>
         ),
       },

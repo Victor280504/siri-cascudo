@@ -5,6 +5,7 @@ import categoryService from "../../services/categoryService";
 import { useQuery } from "@tanstack/react-query";
 import { Category, Product } from "../../types/Products";
 import { Section, SectionList } from "./ProductItem";
+import { Spinner } from "react-bootstrap";
 
 const Home = () => {
   const {
@@ -28,11 +29,38 @@ const Home = () => {
   });
 
   if (productsLoading || categoryLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "start",
+          alignItems: "center",
+          height: "100vh",
+          paddingTop: "20%",
+        }}
+      >
+        <Spinner animation="border" variant={"dark"} />
+      </div>
+    );
   }
 
   if (productsError || categoryError) {
-    return <div>Error...</div>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          color: "#ff4d4f",
+        }}
+      >
+        <h1>Oops! Something went wrong.</h1>
+        <p>We couldn't load the data. Please try again later.</p>
+      </div>
+    );
   }
   return (
     <Item.Container flexDirection="column">

@@ -6,7 +6,7 @@ import Footer from "../../navigation/Footer";
 const Layout = () => {
   return (
     <div id="layout">
-      <div id="inner">
+      <div id="inner" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: "100vh" }}>
         <Navbar />
         <main>
           <Outlet />

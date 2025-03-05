@@ -3,7 +3,7 @@ import Item from "../../ui/Item";
 
 const Footer = () => {
   return (
-    <footer style={{ width: "100%", height: "15vh" }}>
+    <footer style={{ width: "100%", height: "15vh", position: "relative" }}>
       <img
         src={FooterWave}
         alt=""

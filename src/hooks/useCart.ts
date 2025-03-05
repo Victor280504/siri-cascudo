@@ -3,7 +3,6 @@ import { CartContext, CartItem } from "../contexts/CartProvider";
 import { Product } from "../types/Products";
 
 const useCart = () => {
-
   const context = useContext(CartContext);
   if (context === undefined) {
     throw new Error("useCart must be used within a CartProvider");
@@ -13,13 +12,14 @@ const useCart = () => {
     return context.state.items.find((item) => item.idProduct === id);
   };
 
-  const productToCartItem = (product: Product): CartItem => {
+  const productToCartItem = (product: Product, quantity: number): CartItem => {
     return {
       idProduct: product.id,
       name: product.name,
       value: product.price,
-      quantity: 0,
-      product
+      available: product.available,
+      quantity: quantity,
+      product,
     };
   };
 

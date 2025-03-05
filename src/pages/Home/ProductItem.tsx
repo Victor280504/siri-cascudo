@@ -1,11 +1,13 @@
 import styles from "./Home.module.css";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import Item from "../../components/ui/Item";
 import useCart from "../../hooks/useCart";
 import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useAuth } from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
+import { Message } from "../Admin/Dashboard/components/Stock/EditIngredient";
+import { alertColor } from "../../services/api";
 
 export const Section = ({
   children,
@@ -62,6 +64,12 @@ export const SectionList = ({
   );
 };
 
+export type messageType = {
+  variant: alertColor;
+  show: boolean;
+  message: string;
+};
+
 export const SectionItem = ({
   id,
   link,
@@ -74,97 +82,135 @@ export const SectionItem = ({
   available,
 }: SectionItemProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [message, setMessage] = useState<messageType>({
+    variant: "SUCCESS",
+    show: false,
+    message: "",
+  });
+
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage({ ...message, show: false });
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
   return (
-    <div
-      className={styles.sectionItem}
-      style={{ transition: "transform 0.2s", transform: "scale(1)" }}
-      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.03)")}
-      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-    >
-      <button
-        onClick={available ? () => setIsModalOpen(true) : () => {}}
-        style={{
-          width: "100%",
-          height: "100%",
-          cursor: `${available ? "pointer" : "not-allowed"}`,
-          opacity: `${available ? 1 : 0.5}`,
-          border: "none",
-          padding: 0,
-          backgroundColor: "transparent",
-          background: "none",
-        }}
+    <>
+      <div
+        className={styles.sectionItem}
+        style={{ transition: "transform 0.2s", transform: "scale(1)" }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.03)")}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
       >
-        <Item.Container
-          width={"100%"}
-          height={"100%"}
-          padding={"10px"}
-          gap={"10px"}
-        >
-          <Item.Row
-            width={"100%"}
-            padding={"10px"}
-            backgroundColor="#FFF"
-            alignItems="start"
-            borderRadius={"10px"}
-            gap={"10px"}
-            position="relative"
-          >
-            <Item.Container
-              backgroundColor={color}
-              borderRadius={"32px"}
-              width={"18%"}
-              height={"200px"}
-              justifyContent="center"
-            >
-              <Item.Img src={image} alt={name} width={"70%"} />
-            </Item.Container>
-            <Item.Col alignItems="start" paddingLeft={"20px"} width={"70%"}>
-              <Item.Text fontWeight={"bold"} fontSize={"32px"}>
-                {name}
-              </Item.Text>
-              <p className={styles.itemDescription}>{description}</p>
-            </Item.Col>
-            <Item.Container
-              position="absolute"
-              backgroundColor={color}
-              width={"185px"}
-              height={"64px"}
-              borderRadius={"32px"}
-              right={0}
-              top={0}
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Item.Text
-                fontWeight="bold"
-                fontFamily={"Roboto, sans-serif"}
-                fontSize={"28px"}
-                margin={0}
-              >
-                R${price}
-              </Item.Text>
-            </Item.Container>
-          </Item.Row>
-        </Item.Container>
-      </button>
-      {isModalOpen && (
-        <ProductModal
-          product={{
-            id,
-            link,
-            name,
-            description,
-            price,
-            image,
-            color,
-            idCategory,
-            available,
+        <button
+          onClick={available ? () => setIsModalOpen(true) : () => {}}
+          style={{
+            width: "100%",
+            height: "100%",
+            cursor: `${available ? "pointer" : "not-allowed"}`,
+            opacity: `${available ? 1 : 0.5}`,
+            border: "none",
+            padding: 0,
+            backgroundColor: "transparent",
+            background: "none",
           }}
-          show={isModalOpen}
-          handleClose={() => setIsModalOpen(false)}
-        />
-      )}
-    </div>
+        >
+          <Item.Container
+            width={"100%"}
+            height={"100%"}
+            padding={"10px"}
+            gap={"10px"}
+          >
+            <Item.Row
+              width={"100%"}
+              padding={"10px"}
+              backgroundColor="#FFF"
+              alignItems="start"
+              borderRadius={"10px"}
+              gap={"10px"}
+              position="relative"
+            >
+              <Item.Container
+                backgroundColor={color}
+                borderRadius={"32px"}
+                width={"18%"}
+                height={"200px"}
+                justifyContent="center"
+              >
+                <Item.Img src={image} alt={name} width={"70%"} />
+              </Item.Container>
+              <Item.Col alignItems="start" paddingLeft={"20px"} width={"70%"}>
+                <Item.Text fontWeight={"bold"} fontSize={"32px"}>
+                  {name}
+                </Item.Text>
+                <p className={styles.itemDescription}>{description}</p>
+              </Item.Col>
+              <Item.Container
+                position="absolute"
+                backgroundColor={color}
+                width={"185px"}
+                height={"64px"}
+                borderRadius={"32px"}
+                right={0}
+                top={0}
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Item.Text
+                  fontWeight="bold"
+                  fontFamily={"Roboto, sans-serif"}
+                  fontSize={"28px"}
+                  margin={0}
+                >
+                  R${price}
+                </Item.Text>
+              </Item.Container>
+            </Item.Row>
+          </Item.Container>
+        </button>
+        {isModalOpen && (
+          <ProductModal
+            product={{
+              id,
+              link,
+              name,
+              description,
+              price,
+              image,
+              color,
+              idCategory,
+              available,
+            }}
+            show={isModalOpen}
+            handleClose={() => setIsModalOpen(false)}
+            onSuccessfulAdd={() =>
+              setMessage({
+                variant: "SUCCESS",
+                show: true,
+                message: "Produto adicionado ao carrinho!",
+              })
+            }
+            onItemAdded={() =>
+              setMessage({
+                variant: "WARNING",
+                show: true,
+                message: "Produto já adicionado ao carrinho!",
+              })
+            }
+          />
+        )}
+      </div>
+      <Message
+        variant={message.variant}
+        show={message.show}
+        message={message.message}
+        zIndex={100}
+      />
+    </>
   );
 };
 
@@ -172,13 +218,17 @@ const ProductModal = ({
   product,
   show,
   handleClose,
+  onSuccessfulAdd,
+  onItemAdded,
 }: {
   product: SectionItemProps;
   show: boolean;
   handleClose: () => void;
+  onSuccessfulAdd: () => void;
+  onItemAdded: () => void;
 }) => {
   const { auth } = useAuth();
-  const { addToCart, productToCartItem } = useCart();
+  const { addToCart, productToCartItem, cart } = useCart();
   const [quantity, setQuantity] = useState(1);
 
   const addQuantity = () => {
@@ -214,18 +264,26 @@ const ProductModal = ({
           overflow: "hidden",
         }}
       >
-        <img
-          src={product.image}
-          alt={product.name}
+        <div
           style={{
-            overflow: "hidden",
-            position: "absolute",
-            left: "-40%",
-            height: "70%",
-            maxWidth: "100%",
+            width: "40%",
+            height: "80%",
+            position: "relative",
+            alignItems: "center",
           }}
-        />
-        <div style={{ width: "40%" }}></div>
+        >
+          <img
+            src={product.image}
+            alt={product.name}
+            style={{
+              overflow: "hidden",
+              position: "absolute",
+              right: "0px",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+        </div>
         <Item.Col
           width={"60%"}
           height="70%"
@@ -246,10 +304,7 @@ const ProductModal = ({
             textAlign="left"
             marginBottom={"10%"}
           >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem
-            ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.
+            {product.description}
           </Item.Text>
           <Item.Row
             width={"100%"}
@@ -334,25 +389,40 @@ const ProductModal = ({
               fontSize="30px"
               fontWeight="bold"
             >
-              R${product.price * quantity}
+              R${(product.price * quantity).toFixed(2)}
             </Item.Text>
           </Item.Row>
           <button
             className={styles.modalButton}
             disabled={!auth}
-            onClick={() =>
-              addToCart(
-                productToCartItem({
-                  id: product.id,
-                  name: product.name,
-                  price: product.price,
-                  available: product.available!,
-                  description: product.description,
-                  image: product.image,
-                  idCategory: product.idCategory,
-                })
-              )
-            }
+            onClick={() => {
+              const itemInCart = cart.items.find(
+                (cartItem) => cartItem.idProduct === product.id
+              );
+              if (
+                itemInCart &&
+                itemInCart.quantity + quantity > itemInCart.available!
+              ) {
+                onItemAdded();
+              } else {
+                addToCart(
+                  productToCartItem(
+                    {
+                      id: product.id,
+                      name: product.name,
+                      price: product.price,
+                      available: product.available!,
+                      description: product.description,
+                      image: product.image,
+                      idCategory: product.idCategory,
+                    },
+                    quantity
+                  )
+                );
+                onSuccessfulAdd();
+              }
+              handleClose();
+            }}
           >
             Adicionar
           </button>

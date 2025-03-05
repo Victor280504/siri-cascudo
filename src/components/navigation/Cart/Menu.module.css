@@ -152,6 +152,12 @@
   position: relative;
 }
 
+.cartCard.cartCardSale {
+  padding-top: 3%;
+  padding-bottom: 3%;
+  background: linear-gradient(to bottom, #fff 50%, #fff2d9 50%);
+}
+
 .allItems {
   width: 80%;
 }
