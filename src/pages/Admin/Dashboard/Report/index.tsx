@@ -100,64 +100,130 @@ const ReportTable = ({ reportItems, type }: ReportTableType) => {
       >
         <thead className={styles.thead}>
           <tr className={styles.tr}>
-            <th>Data</th>
-            <th>Qtde Pedidos</th>
-            <th>Receita</th>
-            <th>Despesas</th>
-            <th>Lucro</th>
-            <th>Comparativo</th>
+            <th className={styles.th}>Data</th>
+            <th className={styles.th}>Qtde Pedidos</th>
+            <th className={styles.th}>Receita</th>
+            <th className={styles.th}>Despesas</th>
+            <th className={styles.th}>Lucro</th>
+            <th className={styles.th}>Comparativo</th>
           </tr>
         </thead>
         <tbody>
-          {reportItems.map((item) => (
-            <tr key={item.date}>
-              <td>
-                {type === "weekly"
-                  ? new Date(item.date)
+          {type === "weekly"
+            ? reportItems.map((item) => (
+                <tr key={item.date} className={styles.tr}>
+                  <td className={styles.td}>
+                    {new Date(item.date)
                       .toLocaleDateString("pt-BR", {
                         weekday: "short",
                         day: "2-digit",
                         month: "2-digit",
                       })
                       .replace(/^\w/, (c) => c.toUpperCase())
-                      .replace(/\.$/, "")
-                  : new Date(item.date)
-                      .toLocaleDateString("pt-BR", { month: "short" })
+                      .replace(/\.$/, "")}
+                  </td>
+                  <td className={styles.td}>{item.totalOrders}</td>
+                  <td className={styles.td}>
+                    {item.revenue.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </td>
+                  <td className={styles.td}>
+                    {item.expenses.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </td>
+                  <td className={styles.td}>
+                    {item.profit.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </td>
+                  <td
+                    className={styles.td}
+                    style={{
+                      color: item.comparison >= 0 ? "green" : "red",
+                    }}
+                  >
+                    {item.comparison >= 0 ? "+" : ""}
+                    {item.comparison.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </td>
+                </tr>
+              ))
+            : Object.values(
+                reportItems.reduce(
+                  (acc: { [key: string]: MonthlyReport }, item) => {
+                    const month = new Date(item.date).toLocaleDateString(
+                      "pt-BR",
+                      {
+                        month: "short",
+                      }
+                    );
+                    if (!acc[month]) {
+                      acc[month] = {
+                        ...item,
+                        date: month,
+                        totalOrders: 0,
+                        revenue: 0,
+                        expenses: 0,
+                        profit: 0,
+                        comparison: 0,
+                      };
+                    }
+                    acc[month].totalOrders += item.totalOrders;
+                    acc[month].revenue += item.revenue;
+                    acc[month].expenses += item.expenses;
+                    acc[month].profit += item.profit;
+                    acc[month].comparison += item.comparison;
+                    return acc;
+                  },
+                  {}
+                )
+              ).map((item) => (
+                <tr key={item.date} className={styles.tr}>
+                  <td className={styles.td}>
+                    {item.date
                       .replace(/^\w/, (c) => c.toUpperCase())
                       .replace(/\.$/, "")}
-              </td>
-              <td>{item.totalOrders}</td>
-              <td>
-                {item.revenue.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })}
-              </td>
-              <td>
-                {item.expenses.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })}
-              </td>
-              <td>
-                {item.profit.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })}
-              </td>
-              <td
-                style={{
-                  color: item.comparison >= 0 ? "green" : "red",
-                }}
-              >
-                {item.comparison >= 0 ? "+" : ""}
-                {item.comparison.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })}
-              </td>
-            </tr>
-          ))}
+                  </td>
+                  <td className={styles.td}>{item.totalOrders}</td>
+                  <td className={styles.td}>
+                    {item.revenue.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </td>
+                  <td className={styles.td}>
+                    {item.expenses.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </td>
+                  <td className={styles.td}>
+                    {item.profit.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </td>
+                  <td
+                    className={styles.td}
+                    style={{
+                      color: item.comparison >= 0 ? "green" : "red",
+                    }}
+                  >
+                    {item.comparison >= 0 ? "+" : ""}
+                    {item.comparison.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </td>
+                </tr>
+              ))}
           <tr style={{ height: "40px" }}></tr>
         </tbody>
       </table>

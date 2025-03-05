@@ -24,8 +24,8 @@
   padding-top: 5px;
 }
 .tr,
-th,
-td {
+.th,
+.td {
   color: #28356a;
   padding-top: 10px;
   padding-left: 25px;
