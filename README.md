@@ -60,6 +60,3 @@ O projeto consome uma API externa para gerenciar a parte do back-end. O reposit�
 ## ❌ Contribuições
 No momento, o projeto não aceita contribuições externas.
 
----
-Se precisar de ajustes ou quiser adicionar mais detalhes, só avisar! 😊
-
